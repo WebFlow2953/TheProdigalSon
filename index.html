@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prodigal Son — Built Different. Made To Stand Out.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Permanent+Marker&family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --near-black:#111111;
+    --lime:#c6ff2e;
+    --lime-dark:#a8db1c;
+    --gray-900:#1a1a1a;
+    --gray-600:#6b6b6b;
+    --gray-300:#d8d8d8;
+    --gray-100:#f4f4f4;
+    --white:#ffffff;
+    --radius:2px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--near-black);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  ul{list-style:none;}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 40px;}
+  h1,h2,h3{font-family:'Archivo Black',sans-serif;letter-spacing:-0.01em;}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+
+  /* ============ TOP BAR ============ */
+  .topbar{
+    background:var(--black);
+    color:var(--white);
+    font-size:12px;
+    letter-spacing:.02em;
+  }
+  .topbar .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:9px 40px;gap:16px;
+  }
+  .topbar-left,.topbar-right{display:flex;align-items:center;gap:8px;white-space:nowrap;}
+  .topbar-center{flex:1;text-align:center;}
+  .topbar-center strong{color:var(--lime);font-weight:700;}
+  .topbar-right a{opacity:.9;transition:opacity .15s;}
+  .topbar-right a:hover{opacity:1;color:var(--lime);}
+  .topbar-right .sep{opacity:.35;}
+  .topbar svg{width:14px;height:14px;flex-shrink:0;}
+
+  /* ============ HEADER ============ */
+  header.main{
+    background:var(--white);
+    border-bottom:1px solid var(--gray-100);
+    position:sticky;top:0;z-index:100;
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 40px;gap:24px;
+  }
+  .logo{
+    font-family:'Permanent Marker',cursive;
+    font-size:26px;
+    letter-spacing:.02em;
+    color:var(--near-black);
+    line-height:1;
+  }
+  .logo-img{height:52px;width:auto;display:block;object-fit:contain;}
+  nav.primary-nav{display:flex;align-items:center;gap:34px;}
+  nav.primary-nav a{
+    font-size:14px;font-weight:600;letter-spacing:.03em;
+    color:var(--near-black);
+    display:flex;align-items:center;gap:5px;
+    padding:6px 0;position:relative;
+    transition:color .15s;
+  }
+  nav.primary-nav a:hover{color:var(--lime-dark);}
+  nav.primary-nav a.active{color:var(--near-black);}
+  nav.primary-nav a.active::after{
+    content:'';position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--lime);
+  }
+  .caret{width:9px;height:9px;flex-shrink:0;}
+  .dropdown-wrap{position:relative;}
+  .dropdown{
+    position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);
+    background:var(--white);border:1px solid var(--gray-100);
+    box-shadow:0 12px 32px rgba(0,0,0,.12);
+    min-width:190px;padding:10px 0;
+    opacity:0;visibility:hidden;translate:0 6px;
+    transition:opacity .15s, translate .15s, visibility .15s;
+  }
+  .dropdown-wrap:hover .dropdown, .dropdown-wrap:focus-within .dropdown{
+    opacity:1;visibility:visible;translate:0 0;
+  }
+  .dropdown a{display:block;padding:9px 20px;font-weight:500;font-size:13.5px;}
+  .dropdown a:hover{background:var(--gray-100);color:var(--near-black);}
+
+  .header-icons{display:flex;align-items:center;gap:22px;}
+  .icon-btn{position:relative;width:20px;height:20px;color:var(--near-black);}
+  .icon-btn svg{width:20px;height:20px;transition:color .15s;}
+  .icon-btn:hover svg{color:var(--lime-dark);}
+  .badge{
+    position:absolute;top:-9px;right:-10px;
+    background:var(--lime);color:var(--near-black);
+    font-size:10px;font-weight:800;
+    width:16px;height:16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .hamburger{display:none;width:22px;height:22px;}
+
+  /* ============ SEARCH OVERLAY ============ */
+  .search-overlay{
+    position:fixed;inset:0;background:rgba(10,10,10,.6);
+    z-index:200;display:flex;align-items:flex-start;justify-content:center;
+    padding-top:90px;
+    opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;
+  }
+  .search-overlay.open{opacity:1;visibility:visible;}
+  .search-panel{
+    background:var(--white);width:min(600px,90vw);border-radius:4px;
+    padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.3);
+  }
+  .search-panel form{display:flex;gap:10px;border-bottom:2px solid var(--near-black);padding-bottom:10px;}
+  .search-panel input{flex:1;border:none;font-size:18px;font-family:inherit;outline:none;}
+  .search-panel button{color:var(--near-black);}
+  .search-close{position:absolute;top:24px;right:32px;color:#fff;width:26px;height:26px;}
+  .search-results{margin-top:16px;font-size:14px;color:var(--gray-600);}
+  .search-results .hit{padding:8px 0;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;color:var(--near-black);font-weight:600;}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;background:var(--black);color:var(--white);
+    min-height:min(560px,80vh);
+    display:flex;align-items:center;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:linear-gradient(100deg, rgba(0,0,0,.92) 20%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.15) 100%), url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    filter:grayscale(35%);
+  }
+  .hero-content{position:relative;z-index:2;padding:80px 40px;max-width:640px;}
+  .eyebrow{
+    color:var(--lime);font-weight:800;font-size:13px;letter-spacing:.14em;
+    margin-bottom:16px;display:block;text-transform:uppercase;
+  }
+  .hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.04;margin-bottom:20px;}
+  .hero h1 .accent{color:var(--lime);}
+  .hero p{color:var(--gray-300);font-size:15.5px;line-height:1.6;max-width:440px;margin-bottom:34px;}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    padding:15px 30px;font-weight:700;font-size:13.5px;letter-spacing:.04em;
+    border-radius:2px;transition:transform .12s ease, background .15s, color .15s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:active{transform:translateY(1px) scale(.98);}
+  .btn-primary{background:var(--lime);color:var(--near-black);}
+  .btn-primary:hover{background:var(--lime-dark);}
+  .btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.55);}
+  .btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.08);}
+  .btn-dark{background:var(--near-black);color:var(--white);}
+  .btn-dark:hover{background:#000;}
+
+  /* ============ FEATURES BAR ============ */
+  .features{border-bottom:1px solid var(--gray-100);}
+  .features .wrap{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    padding:28px 40px;
+  }
+  .feature{
+    display:flex;align-items:center;gap:14px;
+    padding:0 20px;border-left:1px solid var(--gray-100);
+  }
+  .feature:first-child{border-left:none;padding-left:0;}
+  .feature svg{width:26px;height:26px;flex-shrink:0;color:var(--near-black);}
+  .feature strong{display:block;font-size:13.5px;font-weight:700;letter-spacing:.02em;}
+  .feature span{display:block;font-size:12.5px;color:var(--gray-600);margin-top:2px;}
+
+  /* ============ SECTION HEADERS ============ */
+  .section{padding:64px 0;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:34px;flex-wrap:wrap;gap:12px;
+  }
+  .section-head h2{font-size:20px;letter-spacing:.02em;}
+  .section-head.center{justify-content:center;text-align:center;}
+  .view-all{font-size:13px;font-weight:700;letter-spacing:.03em;display:flex;align-items:center;gap:6px;color:var(--near-black);}
+  .view-all svg{width:15px;height:15px;transition:translate .15s;}
+  .view-all:hover svg{translate:4px 0;}
+
+  /* ============ CATEGORY GRID ============ */
+  .cat-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:16px;
+  }
+  .cat-card{
+    position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;
+    cursor:pointer;
+  }
+  .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;filter:grayscale(15%);}
+  .cat-card:hover img{transform:scale(1.07);}
+  .cat-overlay{
+    position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.35) 100%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;
+  }
+  .cat-overlay strong{font-family:'Archivo Black',sans-serif;font-size:14.5px;letter-spacing:.02em;}
+  .cat-overlay .cat-shop{font-size:11.5px;font-weight:700;color:var(--lime);letter-spacing:.05em;margin-top:6px;border-bottom:1px solid var(--lime);width:max-content;padding-bottom:2px;}
+
+  /* ============ PRODUCT GRID ============ */
+  .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px;}
+  .product-card{position:relative;}
+  .product-img-wrap{position:relative;aspect-ratio:1/1.05;overflow:hidden;background:var(--gray-100);border-radius:2px;margin-bottom:12px;}
+  .product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease, opacity .3s ease;filter:grayscale(10%);}
+  .product-card:hover .product-img-wrap img{transform:scale(1.045);}
+  /* Front/side image swap: the "side" shot sits on top of the "front" shot and
+     fades in on hover, so shoppers get a quick second angle without opening the PDP. */
+  .product-img-front{position:relative;z-index:1;}
+  .product-img-side{position:absolute;inset:0;z-index:2;opacity:0;}
+  .product-card:hover .product-img-side{opacity:1;}
+  .wishlist-btn{
+    position:absolute;top:10px;right:10px;width:32px;height:32px;background:#fff;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);
+    transition:transform .15s;
+  }
+  .wishlist-btn:active{transform:scale(.9);}
+  .wishlist-btn svg{width:16px;height:16px;color:var(--near-black);transition:all .15s;}
+  .wishlist-btn.active svg{color:#ff3b3b;fill:#ff3b3b;}
+  .add-to-cart-overlay{
+    position:absolute;left:8px;right:8px;bottom:8px;
+    background:var(--near-black);color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;
+    padding:10px;text-align:center;border-radius:2px;
+    opacity:0;translate:0 8px;transition:opacity .18s,translate .18s;
+  }
+  .product-card:hover .add-to-cart-overlay{opacity:1;translate:0 0;}
+  .add-to-cart-overlay:hover{background:#000;}
+  .product-name{font-size:13.5px;font-weight:600;margin-bottom:4px;}
+  .product-price{font-size:13.5px;font-weight:700;color:var(--near-black);margin-bottom:8px;}
+  .swatches{display:flex;gap:6px;}
+  .swatch{width:16px;height:16px;border-radius:50%;border:1px solid var(--gray-300);cursor:pointer;position:relative;}
+
+  /* ============ PROMO BANNERS ============ */
+  .promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .promo{position:relative;min-height:280px;display:flex;align-items:center;overflow:hidden;border-radius:2px;}
+  .promo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(40%);}
+  .promo-dark::before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,0,.88) 30%,rgba(0,0,0,.25) 100%);}
+  .promo-light::before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(244,244,244,.94) 32%,rgba(244,244,244,.3) 100%);}
+  .promo-content{position:relative;z-index:2;padding:0 42px;max-width:320px;}
+  .promo-dark .promo-content{color:#fff;}
+  .promo-light .promo-content{color:var(--near-black);}
+  .promo-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.1em;margin-bottom:10px;text-transform:uppercase;opacity:.7;}
+  .promo h3{font-size:24px;line-height:1.15;margin-bottom:20px;}
+
+  /* ============ ABOUT US ============ */
+  .about-section{background:var(--near-black);color:#fff;}
+  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center;}
+  .about-logo-panel{
+    display:flex;align-items:center;justify-content:center;padding:56px 32px;
+  }
+  .about-logo-panel img{height:180px;width:auto;border-radius:12px;}
+  .about-copy .eyebrow{margin-bottom:14px;}
+  .about-copy h2{font-size:clamp(24px,3vw,34px);line-height:1.15;margin-bottom:18px;color:#fff;}
+  .about-copy p{font-size:14.5px;line-height:1.75;color:var(--gray-300);max-width:560px;margin-bottom:16px;}
+  .about-stats{display:flex;gap:36px;margin-top:28px;flex-wrap:wrap;}
+  .about-stats div strong{display:block;font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--lime);}
+  .about-stats div span{display:block;font-size:12px;color:var(--gray-600);letter-spacing:.03em;margin-top:4px;}
+  @media (max-width:860px){
+    .about-grid{grid-template-columns:1fr;gap:32px;}
+    .about-logo-panel{padding:36px 20px;}
+    .about-logo-panel img{height:130px;}
+  }
+
+  /* ============ NEWSLETTER ============ */
+  .newsletter{background:var(--black);color:#fff;padding:36px 0;}
+  .newsletter .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .newsletter-left{display:flex;align-items:center;gap:16px;}
+  .newsletter-left svg{width:24px;height:24px;color:var(--lime);flex-shrink:0;}
+  .newsletter-left strong{display:block;font-size:15px;}
+  .newsletter-left span{display:block;font-size:13px;color:var(--gray-300);margin-top:2px;}
+  .newsletter-form{display:flex;gap:0;flex:1;max-width:460px;min-width:280px;}
+  .newsletter-form input{
+    flex:1;padding:13px 16px;border:1px solid #333;background:#141414;color:#fff;font-size:13.5px;
+    font-family:inherit;outline:none;border-right:none;
+  }
+  .newsletter-form input:focus{border-color:var(--lime);}
+  .newsletter-form button{
+    background:var(--lime);color:var(--near-black);padding:0 22px;font-weight:800;font-size:13px;letter-spacing:.03em;
+    white-space:nowrap;transition:background .15s;
+  }
+  .newsletter-form button:hover{background:var(--lime-dark);}
+  .newsletter-msg{font-size:12.5px;margin-top:8px;color:var(--lime);min-height:16px;}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--black);color:var(--gray-300);position:relative;overflow:hidden;padding-top:56px;}
+  .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;position:relative;z-index:2;padding-bottom:40px;}
+  .footer-brand .logo{margin-bottom:14px;}
+  .footer-brand .logo-img{height:48px;filter:brightness(0) invert(1);}
+  .footer-logo-text{color:#fff;font-size:24px;}
+  .footer-brand p{font-size:13.5px;line-height:1.7;color:var(--gray-600);max-width:280px;margin-bottom:20px;}
+  .social-row{display:flex;gap:12px;}
+  .social-row a{
+    width:34px;height:34px;border:1px solid #2a2a2a;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;transition:all .15s;
+  }
+  .social-row a:hover{border-color:var(--lime);color:var(--lime);}
+  .social-row svg{width:15px;height:15px;}
+  .footer-col h4{font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#fff;margin-bottom:16px;text-transform:uppercase;}
+  .footer-col ul li{margin-bottom:10px;}
+  .footer-col a{font-size:13.5px;color:var(--gray-600);transition:color .15s;}
+  .footer-col a:hover{color:var(--lime);}
+  .footer-watermark{
+    font-family:'Permanent Marker',cursive;font-size:min(8vw,130px);color:#fff;opacity:.045;
+    white-space:nowrap;position:absolute;right:-2%;bottom:-6%;z-index:1;pointer-events:none;line-height:1;
+  }
+  .footer-bottom{
+    border-top:1px solid #1e1e1e;padding:20px 0;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    position:relative;z-index:2;font-size:12.5px;color:var(--gray-600);
+  }
+  .footer-bottom-right{display:flex;align-items:center;gap:18px;}
+  .pay-icons{display:flex;gap:8px;}
+  .pay-icons span{
+    border:1px solid #2a2a2a;border-radius:3px;padding:3px 7px;font-size:10px;font-weight:700;color:var(--gray-300);
+  }
+
+  /* ============ CART DRAWER ============ */
+  .cart-overlay{position:fixed;inset:0;background:rgba(10,10,10,.5);z-index:300;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;}
+  .cart-overlay.open{opacity:1;visibility:visible;}
+  .cart-drawer{
+    position:fixed;top:0;right:0;height:100%;width:min(400px,92vw);background:#fff;z-index:301;
+    display:flex;flex-direction:column;translate:100% 0;transition:translate .3s ease;box-shadow:-10px 0 40px rgba(0,0,0,.2);
+  }
+  .cart-overlay.open .cart-drawer{translate:0 0;}
+  .cart-head{padding:22px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+  .cart-head h3{font-size:16px;}
+  .cart-close{width:20px;height:20px;}
+  .cart-items{flex:1;overflow-y:auto;padding:18px 24px;}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--gray-100);}
+  .cart-item img{width:64px;height:76px;object-fit:cover;border-radius:2px;flex-shrink:0;background:var(--gray-100);}
+  .cart-item-info{flex:1;display:flex;flex-direction:column;}
+  .cart-item-info .name{font-size:13.5px;font-weight:600;}
+  .cart-item-info .meta{font-size:12px;color:var(--gray-600);margin-top:2px;}
+  .qty-row{display:flex;align-items:center;gap:10px;margin-top:auto;}
+  .qty-row button{width:22px;height:22px;border:1px solid var(--gray-300);border-radius:2px;font-weight:700;font-size:13px;line-height:1;}
+  .qty-row .remove{border:none;color:var(--gray-600);text-decoration:underline;font-size:11.5px;margin-left:auto;}
+  .cart-item-price{font-size:13.5px;font-weight:700;white-space:nowrap;}
+  .cart-empty{text-align:center;padding:60px 20px;color:var(--gray-600);font-size:14px;}
+  .cart-foot{padding:20px 24px;border-top:1px solid var(--gray-100);}
+  .cart-subtotal{display:flex;justify-content:space-between;font-weight:700;font-size:15px;margin-bottom:14px;}
+  .cart-foot .btn{width:100%;justify-content:center;}
+
+  /* ============ CHECKOUT ============ */
+  .checkout-overlay{
+    position:fixed;inset:0;z-index:400;background:rgba(10,10,10,.55);
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:40px 20px;overflow-y:auto;
+    opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;
+  }
+  .checkout-overlay.open{opacity:1;visibility:visible;}
+  .checkout-card{
+    background:#fff;width:min(980px,100%);border-radius:6px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.3);
+  }
+  .checkout-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;border-bottom:1px solid var(--gray-100);
+  }
+  .checkout-head h3{font-size:19px;letter-spacing:.02em;}
+  .checkout-close{width:22px;height:22px;color:var(--near-black);flex-shrink:0;}
+  .checkout-body{display:grid;grid-template-columns:1.3fr 1fr;}
+  .checkout-form{padding:28px 32px;border-right:1px solid var(--gray-100);}
+  .checkout-fieldset{margin-bottom:26px;}
+  .checkout-fieldset legend{
+    font-family:'Archivo Black',sans-serif;font-size:12.5px;letter-spacing:.05em;
+    margin-bottom:16px;color:var(--near-black);text-transform:uppercase;
+  }
+  .checkout-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .checkout-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+  .checkout-field label{font-size:12px;font-weight:600;color:var(--gray-600);}
+  .checkout-field input,.checkout-field select{
+    border:1.5px solid var(--gray-300);border-radius:8px;padding:13px 14px;
+    font-size:14px;font-family:inherit;outline:none;color:var(--near-black);
+    background:#fbfaf8;transition:border-color .15s,background .15s,box-shadow .15s;width:100%;
+  }
+  .checkout-field input::placeholder{color:#b8b2a6;}
+  .checkout-field input:hover,.checkout-field select:hover{border-color:#c9c2b4;}
+  .checkout-field input:focus,.checkout-field select:focus{
+    border-color:var(--near-black);background:#fff;
+    box-shadow:0 0 0 3px rgba(20,18,15,.06);
+  }
+  .checkout-field select{
+    appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;background-position:right 12px center;background-size:18px;
+    padding-right:38px;
+  }
+  .checkout-field.error input,.checkout-field.error select{border-color:#e0453c;background:#fff8f7;}
+  .checkout-field.error input:focus,.checkout-field.error select:focus{box-shadow:0 0 0 3px rgba(224,69,60,.1);}
+  .checkout-field .field-error{font-size:11.5px;color:#e0453c;min-height:14px;}
+  .delivery-option{
+    display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--gray-300);
+    border-radius:8px;padding:13px 15px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,background .15s;
+  }
+  .delivery-option:hover{border-color:#c9c2b4;}
+  .delivery-option:has(input:checked){border-color:var(--near-black);background:var(--gray-100);}
+  .delivery-option input{margin-top:3px;accent-color:var(--near-black);flex-shrink:0;}
+  .delivery-option-body{flex:1;}
+  .delivery-option-title{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;gap:10px;}
+  .delivery-option-desc{font-size:12px;color:var(--gray-600);margin-top:2px;}
+  .paxi-locator-link{
+    display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+    color:var(--near-black);text-decoration:underline;margin-top:4px;
+  }
+  .checkout-submit{width:100%;justify-content:center;margin-top:6px;}
+  .checkout-summary{background:var(--gray-100);padding:28px 32px;}
+  .checkout-summary h4{font-size:13px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:16px;}
+  .checkout-summary-items{display:flex;flex-direction:column;gap:14px;max-height:280px;overflow-y:auto;margin-bottom:18px;padding-right:4px;}
+  .checkout-summary-item{display:flex;gap:12px;}
+  .checkout-summary-item img{width:52px;height:60px;object-fit:cover;border-radius:2px;flex-shrink:0;background:var(--gray-300);}
+  .checkout-summary-item-info{flex:1;font-size:12.5px;}
+  .checkout-summary-item-info .name{font-weight:600;margin-bottom:2px;}
+  .checkout-summary-item-info .meta{color:var(--gray-600);}
+  .checkout-summary-item-price{font-size:12.5px;font-weight:700;white-space:nowrap;}
+  .checkout-totals{border-top:1px solid var(--gray-300);padding-top:14px;display:flex;flex-direction:column;gap:9px;}
+  .checkout-totals-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--gray-600);}
+  .checkout-totals-row.grand{font-size:16px;font-weight:800;color:var(--near-black);border-top:1px solid var(--gray-300);padding-top:10px;margin-top:2px;}
+  .checkout-success{padding:60px 32px;text-align:center;}
+  .checkout-success svg{width:52px;height:52px;color:#1a9e5c;margin:0 auto 18px;}
+  .checkout-success h3{font-size:20px;margin-bottom:10px;}
+  .checkout-success p{color:var(--gray-600);font-size:14px;max-width:360px;margin:0 auto 24px;line-height:1.6;}
+  @media (max-width:760px){
+    .checkout-body{grid-template-columns:1fr;}
+    .checkout-form{border-right:none;border-bottom:1px solid var(--gray-100);}
+    .checkout-row{grid-template-columns:1fr;}
+    .checkout-head{padding:18px 20px;}
+    .checkout-form,.checkout-summary{padding:22px 20px;}
+  }
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;translate:-50% 20px;background:var(--near-black);color:#fff;
+    padding:13px 22px;border-radius:3px;font-size:13.5px;font-weight:600;z-index:400;
+    opacity:0;transition:opacity .25s,translate .25s;pointer-events:none;
+    display:flex;align-items:center;gap:10px;
+  }
+  .toast.show{opacity:1;translate:-50% 0;}
+  .toast svg{width:16px;height:16px;color:var(--lime);}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1100px){
+    .product-grid{grid-template-columns:repeat(3,1fr);}
+    .cat-grid{grid-template-columns:repeat(3,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:860px){
+    .wrap{padding:0 20px;}
+    .topbar-left,.topbar-right{display:none;}
+    nav.primary-nav{
+      position:fixed;top:0;left:0;height:100%;width:min(300px,80vw);background:#fff;
+      flex-direction:column;align-items:flex-start;justify-content:flex-start;
+      padding:90px 28px 28px;gap:22px;z-index:150;
+      translate:-100% 0;transition:translate .25s ease;box-shadow:10px 0 30px rgba(0,0,0,.15);
+    }
+    nav.primary-nav.open{translate:0 0;}
+    .dropdown{position:static;transform:none;box-shadow:none;border:none;opacity:1;visibility:visible;translate:0 0;display:none;padding:6px 0 0 12px;}
+    .dropdown-wrap.open .dropdown{display:block;}
+    .hamburger{display:flex;align-items:center;justify-content:center;}
+    .header-inner{padding:14px 20px;}
+    .logo-img{height:46px;}
+    .features .wrap{grid-template-columns:repeat(2,1fr);gap:20px;padding:26px 20px;}
+    .feature{border-left:none;padding:0;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .promo-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .hero-content{padding:56px 20px;}
+    .section{padding:44px 0;}
+  }
+  @media (max-width:480px){
+    .footer-grid{grid-template-columns:1fr;}
+    .newsletter-form{max-width:100%;}
+  }
+
+  [data-nav-scrim]{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:140;
+  }
+  [data-nav-scrim].open{display:block;}
+
+  /* ============ PRODUCT DETAIL PAGE ============ */
+  .pdp-overlay{
+    position:fixed;inset:0;z-index:500;background:#f4ead9;
+    overflow-y:auto;
+    opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s;
+  }
+  .pdp-overlay.open{opacity:1;visibility:visible;}
+  .pdp-back{
+    display:flex;align-items:center;gap:8px;
+    max-width:1500px;margin:0 auto;padding:26px 40px 0;
+    font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--near-black);
+  }
+  .pdp-back svg{width:16px;height:16px;}
+  .pdp-back:hover{color:var(--lime-dark);}
+  .pdp-card{
+    max-width:1500px;margin:18px auto 60px;background:#fff;border-radius:22px;
+    box-shadow:0 30px 70px rgba(0,0,0,.08);overflow:hidden;
+  }
+  .pdp-nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:26px 48px;border-bottom:1px solid var(--gray-100);
+  }
+  .pdp-nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;color:#333;}
+  .pdp-nav-links .caret{width:9px;height:9px;}
+  .pdp-nav-links span{display:flex;align-items:center;gap:5px;cursor:default;}
+  .pdp-logo{font-family:'Lora',serif;font-weight:700;font-style:italic;font-size:24px;color:var(--near-black);display:flex;align-items:center;}
+  .pdp-logo .logo-img{height:44px;}
+  .pdp-nav-icons{display:flex;align-items:center;gap:24px;}
+  .pdp-nav-icons svg{width:19px;height:19px;color:var(--near-black);}
+  .pdp-nav-icons .icon-btn{position:relative;}
+  .pdp-body{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;padding:44px 48px 56px;}
+  .pdp-gallery-main{
+    aspect-ratio:1/1.06;background:var(--gray-100);border-radius:14px;overflow:hidden;
+  }
+  .pdp-gallery-main img{width:100%;height:100%;object-fit:cover;}
+  .pdp-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:14px;}
+  .pdp-thumb{position:relative;aspect-ratio:1/1.15;border-radius:8px;overflow:hidden;background:var(--gray-100);border:2px solid transparent;cursor:pointer;}
+  .pdp-thumb img{width:100%;height:100%;object-fit:cover;}
+  .pdp-thumb.selected{border-color:var(--near-black);}
+  /* Small angle label (FRONT / SIDE / BACK) overlaid on each PDP thumbnail */
+  .pdp-thumb-label{
+    position:absolute;left:0;right:0;bottom:0;padding:3px 0;text-align:center;
+    background:rgba(10,10,10,.72);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  }
+  .pdp-info{padding-top:4px;}
+  .pdp-rating{display:flex;align-items:center;gap:9px;font-size:13.5px;color:#555;margin-bottom:16px;}
+  .pdp-stars{display:flex;gap:2px;color:#f5a623;}
+  .pdp-stars svg{width:16px;height:16px;}
+  .pdp-rating strong{color:var(--near-black);}
+  .pdp-title{font-family:'Lora',serif;font-weight:600;font-size:34px;letter-spacing:-0.01em;margin-bottom:14px;color:var(--near-black);}
+  .pdp-price{font-size:19px;font-weight:600;margin-bottom:18px;}
+  .pdp-desc{font-size:14.5px;line-height:1.7;color:#555;max-width:46ch;margin-bottom:22px;}
+  .pdp-desc .learn-more{font-weight:700;color:var(--near-black);text-decoration:underline;white-space:nowrap;}
+  .pdp-desc .learn-more svg{width:12px;height:12px;display:inline;vertical-align:1px;margin-left:2px;}
+  .pdp-meta-row{display:flex;align-items:center;gap:18px;font-size:13.5px;color:#333;margin-bottom:26px;flex-wrap:wrap;}
+  .pdp-meta-row .meta-item{display:flex;align-items:center;gap:7px;}
+  .pdp-meta-row svg{width:17px;height:17px;}
+  .pdp-meta-row .sep{width:1px;height:16px;background:var(--gray-300);}
+  .pdp-fav.active svg{fill:#ff3b3b;color:#ff3b3b;}
+  .stock-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;}
+  .pdp-select-box{background:var(--gray-100);border-radius:14px;padding:26px 28px;margin-bottom:26px;}
+  .pdp-select-label{font-size:14px;font-weight:700;margin-bottom:14px;}
+  .pdp-color-row{display:flex;gap:12px;padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid #e4e0d9;}
+  .pdp-color-swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;position:relative;border:2px solid transparent;}
+  .pdp-size-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .pdp-size-btn{
+    min-width:52px;padding:10px 14px;text-align:center;border-radius:20px;
+    border:1.5px solid var(--gray-300);background:#fff;font-size:13.5px;font-weight:600;
+    transition:border-color .15s;
+  }
+  .pdp-size-btn.selected{border-color:var(--near-black);border-width:2px;}
+  .pdp-print-row{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid #e4e0d9;}
+  .pdp-print-btn{
+    padding:9px 16px;text-align:center;border-radius:20px;
+    border:1.5px solid var(--gray-300);background:#fff;font-size:13px;font-weight:600;
+    transition:border-color .15s;display:flex;flex-direction:column;line-height:1.3;
+  }
+  .pdp-print-btn span{display:block;font-size:11px;font-weight:500;color:var(--gray-600);}
+  .pdp-print-btn.selected{border-color:var(--near-black);border-width:2px;}
+  .pdp-select-error-msg{display:block;font-size:12px;color:#e0453c;margin-top:6px;min-height:14px;}
+  .pdp-select-error .pdp-size-row .pdp-size-btn,
+  .pdp-select-error .pdp-print-row .pdp-print-btn{border-color:#e0453c;}
+  .pdp-cart-row{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+  .pdp-qty{display:flex;align-items:center;border:1.5px solid var(--gray-300);border-radius:30px;overflow:hidden;}
+  .pdp-qty button{width:38px;height:44px;font-size:16px;font-weight:700;color:var(--near-black);}
+  .pdp-qty span{width:34px;text-align:center;font-weight:700;font-size:14px;}
+  .pdp-add-btn{
+    flex:1;background:var(--near-black);color:#fff;height:44px;border-radius:30px;
+    font-weight:700;font-size:14px;letter-spacing:.02em;transition:background .15s,transform .12s;
+  }
+  .pdp-add-btn:hover{background:#000;}
+  .pdp-add-btn:active{transform:scale(.98);}
+  .pdp-delivery{display:flex;flex-direction:column;gap:12px;}
+  .pdp-delivery-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#333;}
+  .pdp-delivery-row svg{width:19px;height:19px;color:#333;}
+  .pdp-delivery-row .highlight{color:#1a9e5c;font-weight:700;}
+  @media (max-width:900px){
+    .pdp-body{grid-template-columns:1fr;padding:24px 20px 30px;gap:26px;}
+    .pdp-nav{padding:18px 20px;}
+    .pdp-nav-links{display:none;}
+    .pdp-back{padding:18px 20px 0;max-width:100%;}
+    .pdp-card{margin:14px 14px 30px;border-radius:18px;}
+  }
+  @media (max-width:520px){
+    .pdp-back{padding:16px 16px 0;font-size:12.5px;}
+    .pdp-card{margin:10px 8px 24px;border-radius:16px;}
+    .pdp-nav{padding:16px 18px;}
+    .pdp-logo{font-size:19px;}
+    .pdp-nav-icons{gap:15px;}
+    .pdp-nav-icons svg{width:17px;height:17px;}
+    .pdp-body{padding:20px 18px 26px;gap:22px;}
+    .pdp-gallery-main{border-radius:12px;}
+    .pdp-thumbs{gap:8px;margin-top:12px;}
+    .pdp-rating{font-size:12.5px;margin-bottom:14px;}
+    .pdp-stars svg{width:14px;height:14px;}
+    .pdp-title{font-size:24px;margin-bottom:12px;}
+    .pdp-price{font-size:17px;margin-bottom:16px;}
+    .pdp-desc{font-size:13.5px;max-width:none;margin-bottom:20px;}
+    .pdp-meta-row{gap:12px;row-gap:10px;margin-bottom:22px;font-size:12.5px;}
+    .pdp-meta-row svg{width:15px;height:15px;}
+    .pdp-select-box{padding:20px 18px;border-radius:14px;margin-bottom:22px;}
+    .pdp-color-swatch{width:23px;height:23px;}
+    .pdp-size-btn{min-width:46px;padding:9px 12px;font-size:13px;}
+    .pdp-delivery-row{font-size:12.5px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+      <span>FREE SHIPPING ON ORDERS OVER R1500</span>
+    </div>
+    <div class="topbar-right">
+      <a href="#" data-help>HELP &amp; SUPPORT</a>
+      <span class="sep">|</span>
+      <a href="#" data-track>TRACK ORDER</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="main">
+  <div class="header-inner wrap">
+    <button class="hamburger" aria-label="Open menu" data-menu-toggle>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a href="#" class="logo"><img class="logo-img" src="https://i.postimg.cc/RZRTfJdx/Whats-App-Image-2026-08-31-at-10-51-01.jpg" alt="Prodigal Son"></a>
+    <nav class="primary-nav" data-nav>
+      <a href="#top" class="active">HOME</a>
+      <div class="dropdown-wrap" data-dropdown>
+        <a href="#new-arrivals" data-dd-trigger>SHOP
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="dropdown">
+          <a href="#categories" data-cat="Hoodies">Hoodies</a>
+          <a href="#categories" data-cat="T-Shirts">T-Shirts</a>
+          <a href="#categories" data-cat="Pants">Pants</a>
+          <a href="#categories" data-cat="Jackets">Jackets</a>
+          <a href="#categories" data-cat="Accessories">Accessories</a>
+        </div>
+      </div>
+      <a href="#new-arrivals">NEW ARRIVALS</a>
+      <a href="#categories">COLLECTIONS</a>
+      <a href="#promos" data-sale>SALE</a>
+      <a href="#about">ABOUT US</a>
+    </nav>
+    <div class="header-icons">
+      <button class="icon-btn" aria-label="Search" data-search-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Account" data-account>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Cart" data-cart-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L4.5 2H2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+        <span class="badge" data-cart-count>0</span>
+      </button>
+    </div>
+  </div>
+</header>
+<div data-nav-scrim></div>
+
+<!-- ============ SEARCH OVERLAY ============ -->
+<div class="search-overlay" data-search-overlay>
+  <button class="search-close" aria-label="Close search" data-search-close>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="search-panel">
+    <form data-search-form>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search hoodies, tees, pants…" autocomplete="off" data-search-input>
+      <button type="submit" aria-label="Search">Go</button>
+    </form>
+    <div class="search-results" data-search-results>Start typing to search the catalog.</div>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="hero-content">
+      <span class="eyebrow">New Collection</span>
+      <h1>BUILT DIFFERENT.<br>MADE TO <span class="accent">STAND OUT.</span></h1>
+      <p>Premium streetwear for those who set their own rules.</p>
+      <div class="btn-row">
+        <a href="#new-arrivals" class="btn btn-primary">SHOP NOW</a>
+        <a href="#categories" class="btn btn-outline">EXPLORE COLLECTION</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="features">
+  <div class="wrap">
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="14" height="10" rx="1"/><path d="M15 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+      <div><strong>FREE SHIPPING</strong><span>On orders over R1500</span></div>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M5 15a8 8 0 0013.5 3.5M19 9A8 8 0 005.5 5.5"/></svg>
+      <div><strong>PAXI NATIONWIDE</strong><span>Collect at any PEP store</span></div>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.4 8.4-8 9-4.6-.6-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div><strong>SECURE PAYMENT</strong><span>100% secure checkout</span></div>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 15v-3a8 8 0 0116 0v3"/><path d="M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zM20 15a2 2 0 00-2-2h-1v5h1a2 2 0 002-2z"/></svg>
+      <div><strong>CUSTOMER SUPPORT</strong><span>24/7 support</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOP BY CATEGORY ============ -->
+<section class="section" id="categories">
+  <div class="wrap">
+    <div class="section-head center" style="display:block;">
+      <h2>SHOP BY CATEGORY</h2>
+    </div>
+    <div class="cat-grid" data-cat-grid>
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW ARRIVALS ============ -->
+<section class="section" id="new-arrivals">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>NEW ARRIVALS</h2>
+      <a href="#" class="view-all" data-view-all>VIEW ALL
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="product-grid" data-product-grid>
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMO BANNERS ============ -->
+<section class="section" id="promos" style="padding-top:0;">
+  <div class="wrap">
+    <div class="promo-grid">
+      <div class="promo promo-dark">
+        <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="promo-content">
+          <div class="promo-eyebrow">Join The Movement</div>
+          <h3>BE PART OF SOMETHING REAL.</h3>
+          <a href="#new-arrivals" class="btn btn-primary">SHOP NOW</a>
+        </div>
+      </div>
+      <div class="promo promo-dark">
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="promo-content">
+          <div class="promo-eyebrow">Limited Drop</div>
+          <h3>EXCLUSIVE STYLES. LIMITED QUANTITIES.</h3>
+          <a href="#new-arrivals" class="btn btn-primary">EXPLORE NOW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT US ============ -->
+<section class="section about-section" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <!-- Brand logo, shown plainly — no boxed/bordered panel around it -->
+      <div class="about-logo-panel">
+        <img src="https://i.postimg.cc/RZRTfJdx/Whats-App-Image-2026-08-31-at-10-51-01.jpg" alt="The Prodigal Son logo">
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow">Our Story</span>
+        <h2>BUILT DIFFERENT. WORN BY THE BOLD.</h2>
+        <p>The Prodigal Son started as a small run of self-designed graphics printed for friends — no warehouse, no investors, just a refusal to blend in. Every drop since has been built the same way: heavyweight fabrics, in-house prints, and cuts that hold their shape wash after wash.</p>
+        <p>We're not chasing trends. We're building a wardrobe for people who left the crowd behind and came back with something to say. Streetwear made for the bold, designed to break the mold — shipped worldwide.</p>
+        <div class="about-stats">
+          <div><strong>2024</strong><span>ESTABLISHED</span></div>
+          <div><strong>50K+</strong><span>PIECES SHIPPED</span></div>
+          <div><strong>100%</strong><span>IN-HOUSE DESIGN</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="newsletter">
+  <div class="wrap">
+    <div class="newsletter-left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="1"/><path d="M2 6l10 8L22 6"/></svg>
+      <div>
+        <strong>STAY IN THE LOOP</strong>
+        <span>New drops, exclusive offers, and more.</span>
+      </div>
+    </div>
+    <div>
+      <form class="newsletter-form" data-newsletter-form>
+        <input type="email" placeholder="Enter your email address" required data-newsletter-input>
+        <button type="submit">SUBSCRIBE</button>
+      </form>
+      <div class="newsletter-msg" data-newsletter-msg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo footer-logo-text">THE PRODIGAL SON</div>
+        <p>Streetwear made for the bold. Designed to break the mold. Worldwide.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="https://www.tiktok.com/@prodigal.son.clot?_r=1&_t=ZS-99Vm7nxrGwX" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v11.5a3.5 3.5 0 11-3-3.46"/><path d="M14 3c.3 2.4 2 4.2 4.5 4.5"/></svg></a>
+          <a href="https://www.facebook.com/prodigalsonclothing?mibextid=rS40aB7S9Ucbxw6v" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8.5h2V5h-2c-2.2 0-4 1.8-4 4v2H9v3.5h2V21h3.5v-6.5H17l.5-3.5h-3V9c0-.55.45-1 1-1z"/></svg></a>
+          <a href="https://www.tiktok.com/@nkanyisokhanyile20?_r=1&_t=ZS-99Vky38y96z" target="_blank" rel="noopener" aria-label="TikTok — Nkanyiso Khanyile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v11.5a3.5 3.5 0 11-3-3.46"/><path d="M14 3c.3 2.4 2 4.2 4.5 4.5"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#new-arrivals">All Products</a></li>
+          <li><a href="#categories" data-cat="Hoodies">Hoodies</a></li>
+          <li><a href="#categories" data-cat="T-Shirts">T-Shirts</a></li>
+          <li><a href="#categories" data-cat="Pants">Pants</a></li>
+          <li><a href="#categories" data-cat="Jackets">Jackets</a></li>
+          <li><a href="#categories" data-cat="Accessories">Accessories</a></li>
+          <li><a href="#promos" data-sale>Sale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="#" data-help>Contact Us</a></li>
+          <li><a href="#" data-help>Shipping &amp; Delivery</a></li>
+          <li><a href="#" data-track>Track Order</a></li>
+          <li><a href="#" data-help>Size Guide</a></li>
+          <li><a href="#" data-help>FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#" data-about>Sustainability</a></li>
+          <li><a href="#" data-about>Careers</a></li>
+          <li><a href="#" data-about>Wholesale</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-watermark">THE PRODIGAL SON</div>
+  <div class="wrap footer-bottom">
+    <div>© <span data-year></span> THE PRODIGAL SON. All rights reserved.</div>
+    <div class="footer-bottom-right">
+      <span>EN / ZAR</span>
+      <div class="pay-icons">
+        <span>VISA</span><span>MC</span><span>PP</span><span>AP</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ PRODUCT DETAIL PAGE ============ -->
+<div class="pdp-overlay" data-pdp-overlay>
+  <a href="#" class="pdp-back" data-pdp-close>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    Back to shop
+  </a>
+  <div class="pdp-card">
+    <div class="pdp-nav">
+      <div class="pdp-nav-links">
+        <span>Shop</span>
+        <span>Category
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+        <span>About</span>
+        <span>Support</span>
+      </div>
+      <div class="pdp-logo"><img class="logo-img" src="https://i.postimg.cc/RZRTfJdx/Whats-App-Image-2026-08-31-at-10-51-01.jpg" alt="Prodigal Son"></div>
+      <div class="pdp-nav-icons">
+        <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <button class="icon-btn" aria-label="Cart" data-pdp-cart-open>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L4.5 2H2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+          <span class="badge" data-pdp-cart-count>0</span>
+        </button>
+        <button class="icon-btn" aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg></button>
+        <button class="icon-btn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      </div>
+    </div>
+
+    <div class="pdp-body">
+      <div class="pdp-gallery">
+        <div class="pdp-gallery-main"><img data-pdp-main-img src="" alt=""></div>
+        <div class="pdp-thumbs" data-pdp-thumbs></div>
+      </div>
+
+      <div class="pdp-info">
+        <div class="pdp-rating">
+          <span class="pdp-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .9-5.2 4.9 1.4 6.9L12 17.9 5.8 21.2l1.4-6.9L2 9.4l7-.9z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .9-5.2 4.9 1.4 6.9L12 17.9 5.8 21.2l1.4-6.9L2 9.4l7-.9z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .9-5.2 4.9 1.4 6.9L12 17.9 5.8 21.2l1.4-6.9L2 9.4l7-.9z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .9-5.2 4.9 1.4 6.9L12 17.9 5.8 21.2l1.4-6.9L2 9.4l7-.9z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .9-5.2 4.9 1.4 6.9L12 17.9 5.8 21.2l1.4-6.9L2 9.4l7-.9z"/></svg>
+          </span>
+          <strong>4.9/5</strong> <span>(2.5K reviews)</span>
+        </div>
+
+        <h1 class="pdp-title" data-pdp-title>Product Name</h1>
+        <div class="pdp-price" data-pdp-price>R0.00</div>
+        <p class="pdp-desc"><span data-pdp-desc-text>A versatile piece designed for everyday comfort. Features a clean silhouette, premium construction, and easy layering for any season.</span> <a href="#" class="learn-more">Learn More
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a></p>
+        <p class="pdp-color-check" data-pdp-color-check style="display:none;font-size:13.5px;color:#555;margin-top:-10px;margin-bottom:22px;">
+          Don't see the color you want? <a data-pdp-color-check-link href="#" target="_blank" rel="noopener" style="font-weight:700;color:#25D366;text-decoration:underline;">WhatsApp us on 072 619 0190</a> to check availability.
+        </p>
+
+        <div class="pdp-meta-row">
+          <button class="meta-item pdp-fav" data-pdp-fav>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.4 2.2 4.8 5.9 4.2c2-.3 3.9.6 5.1 2.3 1.2-1.7 3.1-2.6 5.1-2.3 3.7.6 5.5 4.2 3.9 7.5C19.5 16.3 12 21 12 21z"/></svg>
+            Add to Favourite
+          </button>
+          <span class="sep"></span>
+          <span class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg> Size Guide</span>
+          <span class="sep"></span>
+          <span class="meta-item"><span class="stock-dot"></span> <span data-pdp-stock>32 in Stock</span></span>
+        </div>
+
+        <div class="pdp-select-box">
+          <div data-pdp-color-block>
+            <div class="pdp-select-label">Select Color</div>
+            <div class="pdp-color-row" data-pdp-colors></div>
+          </div>
+          <div data-pdp-print-block style="display:none;">
+            <div class="pdp-select-label">Print Style</div>
+            <div class="pdp-print-row" data-pdp-print></div>
+            <span class="pdp-select-error-msg" data-pdp-print-error></span>
+          </div>
+          <div data-pdp-size-block>
+            <div class="pdp-select-label">Select Size</div>
+            <div class="pdp-size-row" data-pdp-sizes></div>
+            <span class="pdp-select-error-msg" data-pdp-size-error></span>
+          </div>
+        </div>
+
+        <div class="pdp-cart-row">
+          <div class="pdp-qty">
+            <button data-pdp-qty-dec aria-label="Decrease quantity">–</button>
+            <span data-pdp-qty>01</span>
+            <button data-pdp-qty-inc aria-label="Increase quantity">+</button>
+          </div>
+          <button class="pdp-add-btn" data-pdp-add>Add to Cart</button>
+        </div>
+
+        <div class="pdp-delivery">
+          <div class="pdp-delivery-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4a2 2 0 001-1.7z"/><path d="M3.3 7l8.7 5 8.7-5M12 22V12"/></svg>
+            Estimated Delivery: <span class="highlight" data-pdp-delivery-estimate>Within 4 Days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="cart-overlay" data-cart-overlay>
+  <div class="cart-drawer">
+    <div class="cart-head">
+      <h3>YOUR CART</h3>
+      <button class="cart-close" data-cart-close aria-label="Close cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="cart-items" data-cart-items></div>
+    <div class="cart-foot">
+      <div class="cart-subtotal"><span>Subtotal</span><span data-cart-subtotal>R0.00</span></div>
+      <a href="#" class="btn btn-primary" data-checkout>CHECKOUT</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHECKOUT MODAL ============ -->
+<div class="checkout-overlay" data-checkout-overlay>
+  <div class="checkout-card">
+    <div class="checkout-head">
+      <h3>CHECKOUT</h3>
+      <button class="checkout-close" data-checkout-close aria-label="Close checkout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div data-checkout-content>
+      <form class="checkout-body" data-checkout-form novalidate>
+        <div class="checkout-form">
+          <fieldset class="checkout-fieldset">
+            <legend>Contact</legend>
+            <div class="checkout-row">
+              <div class="checkout-field" data-field="fullName">
+                <label for="co-fullname">Full name</label>
+                <input id="co-fullname" name="fullName" type="text" autocomplete="name" placeholder="Ayabonga Mbhense">
+                <span class="field-error"></span>
+              </div>
+              <div class="checkout-field" data-field="phone">
+                <label for="co-phone">Phone number</label>
+                <input id="co-phone" name="phone" type="tel" autocomplete="tel" placeholder="071 234 5678">
+                <span class="field-error"></span>
+              </div>
+            </div>
+            <div class="checkout-field" data-field="email">
+              <label for="co-email">Email</label>
+              <input id="co-email" name="email" type="email" autocomplete="email" placeholder="you@email.com">
+              <span class="field-error"></span>
+            </div>
+          </fieldset>
+
+          <fieldset class="checkout-fieldset" data-address-fieldset>
+            <legend>Shipping Address</legend>
+            <div class="checkout-field" data-field="address1">
+              <label for="co-address1">Street address</label>
+              <input id="co-address1" name="address1" type="text" autocomplete="address-line1" placeholder="12 Vryheid Road">
+              <span class="field-error"></span>
+            </div>
+            <div class="checkout-field" data-field="address2">
+              <label for="co-address2">Apartment, suite, etc. (optional)</label>
+              <input id="co-address2" name="address2" type="text" autocomplete="address-line2" placeholder="Unit 4B">
+            </div>
+            <div class="checkout-row">
+              <div class="checkout-field" data-field="city">
+                <label for="co-city">City</label>
+                <input id="co-city" name="city" type="text" autocomplete="address-level2" placeholder="Ladysmith">
+                <span class="field-error"></span>
+              </div>
+              <div class="checkout-field" data-field="province">
+                <label for="co-province">Province</label>
+                <select id="co-province" name="province" autocomplete="address-level1">
+                  <option value="">Select province</option>
+                  <option>Eastern Cape</option>
+                  <option>Free State</option>
+                  <option selected>KwaZulu-Natal</option>
+                  <option>Gauteng</option>
+                  <option>Limpopo</option>
+                  <option>Mpumalanga</option>
+                  <option>Northern Cape</option>
+                  <option>North West</option>
+                  <option>Western Cape</option>
+                </select>
+                <span class="field-error"></span>
+              </div>
+            </div>
+            <div class="checkout-row">
+              <div class="checkout-field" data-field="postalCode">
+                <label for="co-postal">Postal code</label>
+                <input id="co-postal" name="postalCode" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="3370">
+                <span class="field-error"></span>
+              </div>
+              <div class="checkout-field" data-field="country">
+                <label for="co-country">Country</label>
+                <select id="co-country" name="country" autocomplete="country-name">
+                  <option selected>South Africa</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="checkout-fieldset">
+            <legend>Delivery Method</legend>
+            <!-- PAXI prices are PEP/Paxi's standard published nationwide
+                 rates (correct as of writing) — worth double-checking at
+                 paxi.co.za occasionally since PAXI can revise them. -->
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="courier" checked>
+              <div class="delivery-option-body">
+                <div class="delivery-option-title"><span>Courier Delivery</span><span data-courier-price>R99.00</span></div>
+                <div class="delivery-option-desc">Delivered to your door. Free on orders over R1500.</div>
+              </div>
+            </label>
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="paxi_economy">
+              <div class="delivery-option-body">
+                <div class="delivery-option-title"><span>PAXI Economy — 7&ndash;9 Business Days</span><span>R59.95</span></div>
+                <div class="delivery-option-desc">Collect from your nearest PEP / PAXI Point.</div>
+              </div>
+            </label>
+            <label class="delivery-option">
+              <input type="radio" name="deliveryMethod" value="paxi_speed">
+              <div class="delivery-option-body">
+                <div class="delivery-option-title"><span>PAXI Speed — 3&ndash;5 Business Days</span><span>R109.95</span></div>
+                <div class="delivery-option-desc">Faster collection from your nearest PEP / PAXI Point.</div>
+              </div>
+            </label>
+            <div class="checkout-field" data-field="paxiNumber" data-paxi-field style="display:none;">
+              <label for="co-paxi">PAXI Point number</label>
+              <input id="co-paxi" name="paxiNumber" type="text" placeholder="e.g. 12345">
+              <span class="field-error"></span>
+              <a href="https://www.paxi.co.za/paxi-points" target="_blank" rel="noopener" class="paxi-locator-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Find your nearest PAXI Point by location
+              </a>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn btn-dark checkout-submit" data-checkout-submit>PLACE ORDER — SEND VIA WHATSAPP</button>
+        </div>
+
+        <div class="checkout-summary">
+          <h4>Order Summary</h4>
+          <div class="checkout-summary-items" data-checkout-summary-items></div>
+          <div class="checkout-totals">
+            <div class="checkout-totals-row"><span>Subtotal</span><span data-checkout-subtotal>R0.00</span></div>
+            <div class="checkout-totals-row"><span>Shipping</span><span data-checkout-shipping>R0.00</span></div>
+            <div class="checkout-totals-row grand"><span>Total</span><span data-checkout-total>R0.00</span></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" data-toast>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+  <span data-toast-msg>Added to cart</span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- DATA ---------- */
+
+  // "Shop by Category" tiles rendered into the #categories grid.
+  // NOTE: `name` here must match a product's `category` value exactly
+  // (see PRODUCTS below) or clicking the tile will find nothing to filter.
+  const CATEGORIES = [
+    { name:"Hoodies",     img:"https://i.postimg.cc/QMd5mPn7/BLACKONe.png" },
+    { name:"T-Shirts",    img:"https://i.postimg.cc/KjKgGssx/Red(front).png" },
+    { name:"Pants",       img:"https://images.unsplash.com/photo-1584865288642-42078afe6942?q=80&w=600&auto=format&fit=crop" },
+    { name:"Jackets",     img:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png" },
+    { name:"Accessories", img:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop" }
+  ];
+
+  // Swatch colors offered on every product card (shared across all products).
+  const COLORS = ["#111111","#c9c2b4","#5a5a5a"];
+
+  // Product catalog. Every `category` value below must exactly match a
+  // `name` in CATEGORIES so it shows up under the correct "Shop by Category"
+  // tile and in the header/footer category quick-links.
+  // Each product now carries THREE images (front / side / back) instead of
+  // one, so both the product-grid hover-swap and the PDP thumbnail gallery
+  // can show more than a single angle. "front" is always that product's own
+  // photo; "side"/"back" reuse other real, already-verified photos from this
+  // same page (category tiles, promo banners, hero) so every URL is
+  // guaranteed to load — no broken images from one-off external lookups.
+  const PRODUCTS = [
+    // PRS back printed teez — split into eight standalone single-color
+    // listings (same pattern as the PR Hoodie / Windbreaker splits below)
+    // so each colorway shows up as its own card under T-Shirts. Shared
+    // `teeDescription` since the seller's original listing had no
+    // description at all.
+    { id:"t1", name:"PRS Back Printed Tee — Black", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/FspQFs3j/Black(front).png", back:"https://i.postimg.cc/rm7wJygZ/Black(back).png" }
+    },
+    { id:"t2", name:"PRS Back Printed Tee — Blue", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#3a5fa8"],
+      images:{ front:"https://i.postimg.cc/tRdKDCr2/Blue(front).png", back:"https://i.postimg.cc/cL5yY9Dq/Blue(back).png" }
+    },
+    { id:"t3", name:"PRS Back Printed Tee — Yellow", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#f2c94c"],
+      images:{ front:"https://cdn.imgpile.com/f/pYFElSf_lg.webp", back:"https://cdn.imgpile.com/f/ubSdiLZ_lg.webp" }
+    },
+    { id:"t4", name:"PRS Back Printed Tee — White", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#ffffff"],
+      images:{ front:"https://cdn.imgpile.com/f/5dujnLJ_lg.webp", back:"https://cdn.imgpile.com/f/cDJk0pZ_lg.webp" }
+    },
+    { id:"t5", name:"PRS Back Printed Tee — Brown", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#6b4a35"],
+      images:{ front:"https://i.postimg.cc/rshgbbRD/Brown(front).png", back:"https://i.postimg.cc/RhCXg9hB/Brown(back).png" }
+    },
+    { id:"t6", name:"PRS Back Printed Tee — Grey", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#8a8a8a"],
+      images:{ front:"https://i.postimg.cc/N076SVZn/Grey(front).png", back:"https://i.postimg.cc/Yqhx0dmd/Grey(back).png" }
+    },
+    { id:"t7", name:"PRS Back Printed Tee — Pink", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#f2a6c8"],
+      images:{ front:"https://cdn.imgpile.com/f/vayBon5_lg.webp", back:"https://cdn.imgpile.com/f/fmEse3H_lg.webp" }
+    },
+    { id:"t8", name:"PRS Back Printed Tee — Red", price:300.00, category:"T-Shirts",
+      description:"Oversized-fit crewneck tee with a bold statement back print — heavyweight cotton, unisex sizing, built for everyday wear with an elevated street silhouette.",
+      colors:["#c81e2c"],
+      images:{ front:"https://i.postimg.cc/KjKgGssx/Red(front).png", back:"https://i.postimg.cc/hGrmpm76/Red(back).png" }
+    },
+    // PRS Round Neck Flock Printed Tshirts — a second tee line (collar
+    // text + small chest logo, single photo per color, no back shot) —
+    // also split into standalone single-color listings, same pattern as
+    // the back-printed tees above.
+    { id:"t9", name:"PRS Round Neck Flock Printed Tee — Black", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#111111"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/XvFyLgJn/Black.png" }
+    },
+    { id:"t10", name:"PRS Round Neck Flock Printed Tee — Blue", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#3a5fa8"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/yNFkcYQS/Blue.png" }
+    },
+    { id:"t11", name:"PRS Round Neck Flock Printed Tee — Brown", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#6b4a35"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/R0z0SxSB/Brown.png" }
+    },
+    { id:"t12", name:"PRS Round Neck Flock Printed Tee — Grey", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#8a8a8a"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/k4gqGnkP/Grey.png" }
+    },
+    { id:"t13", name:"PRS Round Neck Flock Printed Tee — Pink", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#f2a6c8"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/zBhZVVxJ/Pink.png" }
+    },
+    { id:"t14", name:"PRS Round Neck Flock Printed Tee — Red", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#c81e2c"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/xdbFPBMR/RED.png" }
+    },
+    { id:"t15", name:"PRS Round Neck Flock Printed Tee — White", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#ffffff"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://cdn.imgpile.com/f/4TUxV7j_lg.webp" }
+    },
+    { id:"t16", name:"PRS Round Neck Flock Printed Tee — Yellow", price:299.99, category:"T-Shirts",
+      description:"Round neck flock-printed tee with collar branding and a small embroidered-style chest logo. All colors available, sizes range from Small to 3XL.",
+      colors:["#f2c94c"], sizes:["S","M","L","XL","2XL","3XL"],
+      images:{ front:"https://i.postimg.cc/C5KGcfX7/Yellow.png" }
+    },
+    // 3D Printed Tees — front/back photo-realistic 3D graphic print,
+    // R350, five colorways, same standalone-per-color pattern as the
+    // other tee lines above.
+    { id:"t17", name:"3D Printed Tee — Black", price:350.00, category:"T-Shirts",
+      description:"Hyper-realistic 3D printed graphic tee — the design pops off a heavyweight cotton base with sharp, true-to-life detail on both the front and back. Unisex sizing, built for standout everyday wear.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/nV6xpkmR/Black(front).png", back:"https://i.postimg.cc/KYQpjZsV/Black(back).png" }
+    },
+    { id:"t18", name:"3D Printed Tee — Pink", price:350.00, category:"T-Shirts",
+      description:"Hyper-realistic 3D printed graphic tee — the design pops off a heavyweight cotton base with sharp, true-to-life detail on both the front and back. Unisex sizing, built for standout everyday wear.",
+      colors:["#f2a6c8"],
+      images:{ front:"https://i.postimg.cc/2yWPVsWc/Pink(front).png", back:"https://i.postimg.cc/xChwjfXd/Pink(back).png" }
+    },
+    { id:"t19", name:"3D Printed Tee — Red", price:350.00, category:"T-Shirts",
+      description:"Hyper-realistic 3D printed graphic tee — the design pops off a heavyweight cotton base with sharp, true-to-life detail on both the front and back. Unisex sizing, built for standout everyday wear.",
+      colors:["#c81e2c"],
+      images:{ front:"https://i.postimg.cc/VkfV8rK2/RED(front).png", back:"https://i.postimg.cc/9FtnKtY5/RED(back).png" }
+    },
+    { id:"t20", name:"3D Printed Tee — White", price:350.00, category:"T-Shirts",
+      description:"Hyper-realistic 3D printed graphic tee — the design pops off a heavyweight cotton base with sharp, true-to-life detail on both the front and back. Unisex sizing, built for standout everyday wear.",
+      colors:["#ffffff"],
+      images:{ front:"https://i.postimg.cc/s26XchLV/White(front).png", back:"https://i.postimg.cc/6Q5qn0Yv/White(back).png" }
+    },
+    { id:"t21", name:"3D Printed Tee — Yellow", price:350.00, category:"T-Shirts",
+      description:"Hyper-realistic 3D printed graphic tee — the design pops off a heavyweight cotton base with sharp, true-to-life detail on both the front and back. Unisex sizing, built for standout everyday wear.",
+      colors:["#f2c94c"],
+      images:{ front:"https://i.postimg.cc/vHFm3M0Z/Yellow(front).png", back:"https://i.postimg.cc/jqJ5HCQz/yellow(back).png" }
+    },
+    // PRS Regular Golfers — collared golf-style tee, R299.99, sizes
+    // Small–Large only. Blue colorway pending a direct image link.
+    { id:"t22", name:"PRS Regular Golfer — Black", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#111111"], sizes:["S","M","L"],
+      images:{ front:"https://cdn.imgpile.com/f/a5iubYM_lg.webp" }
+    },
+    { id:"t23", name:"PRS Regular Golfer — Yellow", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#f2c94c"], sizes:["S","M","L"],
+      images:{ front:"https://cdn.imgpile.com/f/ivLCKfe_lg.webp" }
+    },
+    { id:"t24", name:"PRS Regular Golfer — White", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#ffffff"], sizes:["S","M","L"],
+      // This photo isn't cropped square like the others, so the default
+      // cover-fit chops off part of the garment — `fit:"contain"` tells
+      // the card/PDP renderers to show it in full instead.
+      fit:"contain",
+      images:{ front:"https://cdn.imgpile.com/f/iXncpmP_lg.webp" }
+    },
+    { id:"t25", name:"PRS Regular Golfer — Red", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#c81e2c"], sizes:["S","M","L"],
+      images:{ front:"https://cdn.imgpile.com/f/vGHTVU0_lg.webp" }
+    },
+    { id:"t26", name:"PRS Regular Golfer — Pink", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#f2a6c8"], sizes:["S","M","L"],
+      images:{ front:"https://cdn.imgpile.com/f/deOb5wi_lg.webp" }
+    },
+    { id:"t27", name:"PRS Regular Golfer — Blue", price:299.99, category:"T-Shirts",
+      description:"Classic-fit golf tee in a soft breathable cotton blend — clean collared silhouette with subtle PRS branding, built for a smart-casual look on or off the course. All colors available, sizes Small to Large.",
+      colors:["#3a5fa8"], sizes:["S","M","L"],
+      images:{ front:"https://cdn.imgpile.com/f/5z8LY5v_lg.webp" }
+    },
+    // "Washed Hoodie" name retired — replaced by "PR Hoodie", ONE product
+    // with three color variants (Black / Pink / White) rather than three
+    // separate listings, since it's the same garment. `colorImages` holds
+    // one image set per entry in `colors` (same index), so picking a
+    // swatch swaps the photo shown — see getImagesFor() below. Only a
+    // front photo exists per color (no side/back shots), so each entry
+    // just omits those keys; the card and PDP gallery skip angles a
+    // product doesn't provide.
+    // PR Hoodie split into five standalone single-color listings (rather
+    // than one product with a color-swatch picker) so each colorway shows
+    // up as its own card under Hoodies.
+    { id:"p2", name:"PR Hoodie — Black", price:320.00, category:"Hoodies",
+      printOptional:true,
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/QMd5mPn7/BLACKONe.png", back:"https://cdn.imgpile.com/f/LRs0Qd2_lg.webp" }
+    },
+    { id:"p2b", name:"PR Hoodie — Green", price:320.00, category:"Hoodies",
+      printOptional:true,
+      colors:["#3d7a4d"],
+      images:{ front:"https://cdn.imgpile.com/f/RLJqD4j_lg.webp", back:"https://i.postimg.cc/zGrv0Jrj/Green(back).png" }
+    },
+    { id:"p2c", name:"PR Hoodie — Grey", price:320.00, category:"Hoodies",
+      printOptional:true,
+      colors:["#8a8a8a"],
+      images:{ front:"https://cdn.imgpile.com/f/q7YDyI9_lg.webp", back:"https://i.postimg.cc/9fNW526W/Grey(back).png" }
+    },
+    { id:"p2d", name:"PR Hoodie — Pink", price:320.00, category:"Hoodies",
+      printOptional:true,
+      colors:["#f2a6c8"],
+      images:{ front:"https://cdn.imgpile.com/f/n5QEMQZ_lg.webp", back:"https://i.postimg.cc/fTjDWmG8/Pink(Back).png" }
+    },
+    { id:"p2e", name:"PR Hoodie — Red", price:320.00, category:"Hoodies",
+      printOptional:true,
+      colors:["#c81e2c"],
+      images:{ front:"https://cdn.imgpile.com/f/4G9KCky_lg.webp", back:"https://cdn.imgpile.com/f/9xIiLKc_lg.webp" }
+    },
+    { id:"p3", name:"Utility Cargo Pants — Black", price:999, category:"Pants",
+      images:{
+        front:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=600&auto=format&fit=crop",
+        side: "https://images.unsplash.com/photo-1584865288642-42078afe6942?q=80&w=600&auto=format&fit=crop",
+        back: "https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=600&auto=format&fit=crop"
+      }
+    },
+    { id:"p5", name:"Prodigal Son Cap — Black", price:299, category:"Accessories",
+      images:{
+        front:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop",
+        side: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
+        back: "https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=600&auto=format&fit=crop"
+      }
+    },
+    { id:"p6", name:"Society Hoodie — White", price:320, category:"Hoodies",
+      printOptional:true,
+      description:"A heavyweight, premium-cut hoodie built for those who stand out in a crowd. Brushed fleece interior, reinforced stitching, and a boxier silhouette than our core PR line — this is the one you reach for when you want the elevated version.",
+      colors:["#ffffff"],
+      images:{ front:"https://cdn.imgpile.com/f/tWJv2s0_lg.webp", back:"https://cdn.imgpile.com/f/iNePNom_lg.webp" }
+    },
+    // Extra accessory so "Accessories" isn't carried by the cap alone.
+    { id:"p9", name:"Canvas Tote Bag — Sand", price:249, category:"Accessories",
+      images:{
+        front:"https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
+        side: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop",
+        back: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600&auto=format&fit=crop"
+      }
+    },
+    // The beanie collection: each colorway is single-color, so all three
+    // override `colors` (hides the swatch/color picker) and use their own
+    // "One Size" / "Large" size set instead of the usual S/M/L/XL row.
+    { id:"p10", name:"PRS Premium Beanies — Red", price:150, category:"Accessories",
+      colors:["#c81e2c"],
+      sizes:["One Size","Large"],
+      images:{
+        front:"https://i.postimg.cc/25WQcGBC/beanie-RED-(front).png",
+        side: "https://i.postimg.cc/mZHv3WrX/beanie-RED-(side-left).png",
+        back: "https://i.postimg.cc/fL4KDph0/beanie-RED-(rear).png"
+      }
+    },
+    { id:"p11", name:"PRS Premium Beanies — Black", price:150, category:"Accessories",
+      colors:["#111111"],
+      sizes:["One Size","Large"],
+      images:{
+        front:"https://i.postimg.cc/h49bn2jT/beanie-Black(front).png",
+        side: "https://i.postimg.cc/J0PsnDSr/beanie-Black(side-left).png",
+        back: "https://i.postimg.cc/DZSj5LP2/beanie-Black(back).png"
+      }
+    },
+    { id:"p12", name:"PRS Beanies — White", price:129.99, category:"Accessories",
+      colors:["#ffffff"],
+      sizes:["One Size","Large"],
+      images:{
+        front:"https://i.postimg.cc/MZRqtQGY/beanie-White(front).png",
+        side: "https://i.postimg.cc/FzQtwTR9/beanie-White(side).png",
+        back: "https://i.postimg.cc/cHw27fcp/beanie-White(back).png"
+      }
+    },
+    // PR Premium Windbreakers split into seven standalone single-color
+    // listings (same pattern as the PR Hoodie split above) so each
+    // colorway shows up as its own card under Jackets, instead of one
+    // product with a color-swatch picker.
+    { id:"p13", name:"PR Premium Windbreaker — Brown", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#6b4a35"],
+      images:{ front:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png", back:"https://i.postimg.cc/0NRnLbGz/brownwindbreaker(back).png" }
+    },
+    { id:"p13b", name:"PR Premium Windbreaker — Red", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#c81e2c"],
+      images:{ front:"https://cdn.imgpile.com/f/uATssWO_lg.webp", back:"https://i.postimg.cc/XYcQF9y4/REDwindbreaker(back).png" }
+    },
+    { id:"p13c", name:"PR Premium Windbreaker — White", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#ffffff"],
+      images:{ front:"https://cdn.imgpile.com/f/IE3HQjw_lg.webp", back:"https://i.postimg.cc/DZbGQKYS/whitewindbreaker(back).png" }
+    },
+    { id:"p13d", name:"PR Premium Windbreaker — Black", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/Wb7kw8XV/blackwindbreaker(front).png", back:"https://i.postimg.cc/L53nv4k9/blackindbreaker(back).png" }
+    },
+    // Blue/Grey/Green colorways only have one photo each (no separate
+    // back shot), so these entries just omit the `back` key — the
+    // gallery/hover logic already handles that gracefully.
+    { id:"p13e", name:"PR Premium Windbreaker — Blue", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#3a5fa8"],
+      images:{ front:"https://cdn.imgpile.com/f/ZyxDJma_lg.webp" }
+    },
+    { id:"p13f", name:"PR Premium Windbreaker — Grey", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#8a8a8a"],
+      images:{ front:"https://cdn.imgpile.com/f/2cLmTtz_lg.webp" }
+    },
+    { id:"p13g", name:"PR Premium Windbreaker — Green", price:600.00, category:"Jackets",
+      deliveryDays:7,
+      colors:["#3d7a4d"],
+      images:{ front:"https://cdn.imgpile.com/f/HC52cJf_lg.webp" }
+    },
+    // Only one real product photo was provided for this one (a black/green
+    // colorway shot) — the six colors below are offered per the seller's
+    // listing, but the gallery photo stays the same across all of them
+    // since individual per-color shots aren't available yet.
+    { id:"p14", name:"PRS Exclusive Hoodies", price:449.99, category:"Hoodies",
+      description:"A bold two-tone colorblock hoodie from our exclusive drop. Available in Green, Black, Red, Blue, Grey, and White — stock is limited, so grab your size while it lasts.",
+      colors:["#3d7a4d", "#111111", "#c81e2c", "#3a5fa8", "#8a8a8a", "#ffffff"],
+      images:{ front:"https://i.postimg.cc/bNMSPvJd/hhh.png" }
+    }
+  ];
+  // Resolves which image set to show for a product at a given color index.
+  // Most products have one fixed `images` object. Products with multiple
+  // real per-color photos (like PR Hoodie) instead define `colorImages`,
+  // an array aligned with `colors` — this picks the right entry so the
+  // displayed photo actually matches the selected swatch.
+  function getImagesFor(product, colorIndex){
+    if(product.colorImages) return product.colorImages[colorIndex] || product.colorImages[0];
+    return product.images;
+  }
+
+  const state = {
+    wishlist:new Set(),
+    cart:[], // {id,name,price,img,color,qty}
+    selectedColor:{} // productId -> colorIndex
+  };
+
+  const $  = (sel,ctx=document)=>ctx.querySelector(sel);
+  const $$ = (sel,ctx=document)=>Array.from(ctx.querySelectorAll(sel));
+  const money = n => 'R' + n.toFixed(2);
+
+  /* ---------- RENDER CATEGORIES ---------- */
+  // Build one tile per entry in CATEGORIES and inject into the
+  // "Shop by Category" grid. Each tile stores its category name in a
+  // data attribute so a single delegated click handler can filter products.
+  const catGrid = $('[data-cat-grid]');
+  catGrid.innerHTML = CATEGORIES.map(c => `
+    <div class="cat-card" data-cat-card="${c.name}">
+      <img src="${c.img}" alt="${c.name}" loading="lazy">
+      <div class="cat-overlay">
+        <strong>${c.name.toUpperCase()}</strong>
+        <span class="cat-shop">SHOP NOW</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Clicking any category tile filters the New Arrivals grid down to
+  // matching products (see filterByCategory below).
+  catGrid.addEventListener('click', e=>{
+    const card = e.target.closest('[data-cat-card]');
+    if(!card) return;
+    filterByCategory(card.dataset.catCard);
+  });
+
+  /* ---------- RENDER PRODUCTS ---------- */
+  const productGrid = $('[data-product-grid]');
+
+  // Renders a list of products into the New Arrivals grid.
+  // Called with the full PRODUCTS array by default, and with a filtered
+  // subset whenever a category tile or nav link is clicked.
+  function renderProducts(list){
+    productGrid.innerHTML = list.map(p=>{
+      state.selectedColor[p.id] = state.selectedColor[p.id] ?? 0;
+      const wished = state.wishlist.has(p.id);
+      // Products can override the default 3-color swatch set via `colors`.
+      // A product with only one color (e.g. the Beanie, red-only) has
+      // nothing to pick between, so the swatch row is skipped entirely.
+      const colorList = p.colors || COLORS;
+      // Picks the image set for whichever color is currently selected for
+      // this product (falls back to the product's single `images` object
+      // when it doesn't have per-color photos).
+      const imgs = getImagesFor(p, state.selectedColor[p.id]);
+      return `
+      <div class="product-card" data-product-card="${p.id}">
+        <div class="product-img-wrap">
+          <!-- Front image is always visible; the side-view image fades on top
+               when the shopper hovers the card (see .product-img-side in CSS).
+               Both are clickable and open the full front/side/back PDP gallery.
+               Products with only a front photo (no side shot) skip the
+               hover-swap image entirely instead of faking a second angle. -->
+          <img class="product-img-front" src="${imgs.front}" alt="${p.name} — front view" loading="lazy" data-open-pdp="${p.id}" style="cursor:pointer;${p.fit==='contain'?'object-fit:contain;background:#f4f4f4;':''}">
+          ${imgs.side ? `<img class="product-img-side" src="${imgs.side}" alt="${p.name} — side view" loading="lazy" data-open-pdp="${p.id}" style="cursor:pointer;${p.fit==='contain'?'object-fit:contain;background:#f4f4f4;':''}">` : (imgs.back ? `<img class="product-img-side" src="${imgs.back}" alt="${p.name} — back view" loading="lazy" data-open-pdp="${p.id}" style="cursor:pointer;${p.fit==='contain'?'object-fit:contain;background:#f4f4f4;':''}">` : '')}
+          <button class="wishlist-btn ${wished?'active':''}" data-wishlist="${p.id}" aria-label="Toggle wishlist">
+            <svg viewBox="0 0 24 24" fill="${wished?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.4 2.2 4.8 5.9 4.2c2-.3 3.9.6 5.1 2.3 1.2-1.7 3.1-2.6 5.1-2.3 3.7.6 5.5 4.2 3.9 7.5C19.5 16.3 12 21 12 21z"/></svg>
+          </button>
+          <button class="add-to-cart-overlay" data-add-cart="${p.id}">ADD TO CART</button>
+        </div>
+        <div class="product-name" data-open-pdp="${p.id}" style="cursor:pointer;">${p.name}</div>
+        <div class="product-price">${money(p.price)}</div>
+        ${colorList.length > 1 ? `
+        <div class="swatches" data-swatches="${p.id}">
+          ${colorList.map((c,i)=>`<button class="swatch ${i===state.selectedColor[p.id]?'selected':''}" style="background:${c}" data-swatch="${p.id}" data-color-index="${i}" aria-label="Select color"></button>`).join('')}
+        </div>` : ''}
+      </div>`;
+    }).join('');
+  }
+  // New Arrivals shows a hand-picked spread across categories by default
+  // (one tee alongside a hoodie, pants, a jacket and a cap) rather than
+  // just the first 5 catalog entries — the rest only appear once a shopper
+  // clicks into a specific category tile (or "VIEW ALL", which still shows
+  // the full catalog).
+  const NEW_ARRIVAL_IDS = ["t1","p2","p3","p13d","p5"];
+  renderProducts(PRODUCTS.filter(p => NEW_ARRIVAL_IDS.includes(p.id)));
+  // section, and re-renders. Falls back to showing everything if a category
+  // has no products yet (shouldn't happen as long as every CATEGORIES entry
+  // has at least one matching PRODUCTS entry — see the DATA section above).
+  function filterByCategory(cat){
+    const filtered = PRODUCTS.filter(p=>p.category===cat);
+    renderProducts(filtered.length ? filtered : PRODUCTS);
+    document.getElementById('new-arrivals').scrollIntoView({behavior:'smooth', block:'start'});
+    showToast(filtered.length ? `Showing ${cat}` : `No items yet in ${cat} — showing all`);
+  }
+
+  // "VIEW ALL" link resets the New Arrivals grid back to the full catalog.
+  $('[data-view-all]').addEventListener('click', e=>{
+    e.preventDefault();
+    renderProducts(PRODUCTS);
+    showToast('Showing all new arrivals');
+  });
+
+  /* Delegate product grid interactions (re-bound each render via delegation on parent) */
+  productGrid.addEventListener('click', e=>{
+    const openBtn = e.target.closest('[data-open-pdp]');
+    if(openBtn){ openPDP(openBtn.dataset.openPdp); return; }
+    const wishBtn = e.target.closest('[data-wishlist]');
+    if(wishBtn){
+      const id = wishBtn.dataset.wishlist;
+      if(state.wishlist.has(id)){ state.wishlist.delete(id); wishBtn.classList.remove('active'); wishBtn.querySelector('svg').setAttribute('fill','none'); }
+      else { state.wishlist.add(id); wishBtn.classList.add('active'); wishBtn.querySelector('svg').setAttribute('fill','currentColor'); }
+      return;
+    }
+    const swatch = e.target.closest('[data-swatch]');
+    if(swatch){
+      const id = swatch.dataset.swatch;
+      state.selectedColor[id] = Number(swatch.dataset.colorIndex);
+      // Full re-render (keeping the current filter/search results) so the
+      // card's photo updates to match the newly selected color, not just
+      // the swatch's own selected outline.
+      renderProducts(currentGridProducts());
+      return;
+    }
+    const addBtn = e.target.closest('[data-add-cart]');
+    if(addBtn){
+      const id = addBtn.dataset.addCart;
+      const product = PRODUCTS.find(p=>p.id===id);
+      addToCart(product, state.selectedColor[id] ?? 0);
+      return;
+    }
+  });
+
+  /* ---------- CART ---------- */
+  const cartOverlay = $('[data-cart-overlay]');
+  const cartItemsEl = $('[data-cart-items]');
+  const cartCountEl = $('[data-cart-count]');
+  const cartSubtotalEl = $('[data-cart-subtotal]');
+
+  function addToCart(product, colorIndex){
+    const key = product.id + '-' + colorIndex;
+    const colorList = product.colors || COLORS;
+    const imgs = getImagesFor(product, colorIndex);
+    const existing = state.cart.find(i=>i.key===key);
+    if(existing){ existing.qty++; }
+    else {
+      state.cart.push({
+        key, id:product.id, name:product.name, price:product.price,
+        img:imgs.front, color:colorList[colorIndex], qty:1
+      });
+    }
+    renderCart();
+    showToast(`${product.name} added to cart`);
+  }
+
+  function renderCart(){
+    const totalQty = state.cart.reduce((s,i)=>s+i.qty,0);
+    cartCountEl.textContent = totalQty;
+    const pdpCountEl = $('[data-pdp-cart-count]');
+    if(pdpCountEl) pdpCountEl.textContent = totalQty;
+
+    if(state.cart.length===0){
+      cartItemsEl.innerHTML = `<div class="cart-empty">Your cart is empty.<br>Add something built different.</div>`;
+    } else {
+      cartItemsEl.innerHTML = state.cart.map(item=>`
+        <div class="cart-item" data-cart-item="${item.key}">
+          <img src="${item.img}" alt="${item.name}">
+          <div class="cart-item-info">
+            <div class="name">${item.name}</div>
+            <div class="meta">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${item.color};vertical-align:-1px;border:1px solid #ddd;"></span>
+              Qty ${item.qty}
+            </div>
+            <div class="qty-row">
+              <button data-qty-dec="${item.key}" aria-label="Decrease quantity">–</button>
+              <span>${item.qty}</span>
+              <button data-qty-inc="${item.key}" aria-label="Increase quantity">+</button>
+              <button class="remove" data-remove="${item.key}">Remove</button>
+            </div>
+          </div>
+          <div class="cart-item-price">${money(item.price*item.qty)}</div>
+        </div>
+      `).join('');
+    }
+    const subtotal = state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+    cartSubtotalEl.textContent = money(subtotal);
+  }
+  renderCart();
+
+  cartItemsEl.addEventListener('click', e=>{
+    const inc = e.target.closest('[data-qty-inc]');
+    const dec = e.target.closest('[data-qty-dec]');
+    const rem = e.target.closest('[data-remove]');
+    if(inc){ const it = state.cart.find(i=>i.key===inc.dataset.qtyInc); it.qty++; renderCart(); }
+    if(dec){
+      const it = state.cart.find(i=>i.key===dec.dataset.qtyDec);
+      it.qty--; if(it.qty<=0) state.cart = state.cart.filter(i=>i!==it);
+      renderCart();
+    }
+    if(rem){ state.cart = state.cart.filter(i=>i.key!==rem.dataset.remove); renderCart(); }
+  });
+
+  function closeCart(){ cartOverlay.classList.remove('open'); consumeOverlayHistory(); }
+  $('[data-cart-open]').addEventListener('click', ()=>{ cartOverlay.classList.add('open'); pushOverlayHistory(); });
+  $('[data-cart-close]').addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', e=>{ if(e.target===cartOverlay) closeCart(); });
+
+  /* ---------- CHECKOUT ---------- */
+  const SHIPPING_FEE = 99;
+  const FREE_SHIPPING_THRESHOLD = 1500;
+
+  // PAXI's standard published nationwide store-to-store rates (flat fee
+  // regardless of distance) — see paxi.co.za for the current pricing guide.
+  const DELIVERY_METHODS = {
+    courier:      { label:'Courier Delivery',                        price:null }, // null = use the free-shipping-threshold courier fee below
+    paxi_economy: { label:'PAXI Economy (7–9 Business Days)',        price:59.95 },
+    paxi_speed:   { label:'PAXI Speed (3–5 Business Days)',          price:109.95 }
+  };
+
+  const checkoutOverlay = $('[data-checkout-overlay]');
+  const checkoutContent = $('[data-checkout-content]');
+  const checkoutForm = $('[data-checkout-form]');
+
+  function cartTotals(deliveryMethod){
+    const subtotal = state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+    let shipping;
+    if(deliveryMethod && deliveryMethod!=='courier'){
+      shipping = subtotal===0 ? 0 : DELIVERY_METHODS[deliveryMethod].price;
+    } else {
+      shipping = subtotal===0 || subtotal>=FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    }
+    return { subtotal, shipping, total: subtotal + shipping };
+  }
+
+  function renderCheckoutSummary(deliveryMethod){
+    // Query fresh each time rather than caching these nodes at page load —
+    // openCheckout() rebuilds the whole form (including this summary
+    // panel) from scratch on every open, so cached references from an
+    // earlier open would silently point at detached, invisible elements.
+    const summaryItemsEl = $('[data-checkout-summary-items]', checkoutContent);
+    const subtotalEl = $('[data-checkout-subtotal]', checkoutContent);
+    const shippingEl = $('[data-checkout-shipping]', checkoutContent);
+    const totalEl = $('[data-checkout-total]', checkoutContent);
+    if(!summaryItemsEl) return; // success screen is showing, no summary panel to fill
+
+    summaryItemsEl.innerHTML = state.cart.map(item=>`
+      <div class="checkout-summary-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="checkout-summary-item-info">
+          <div class="name">${item.name}</div>
+          <div class="meta">Qty ${item.qty}${item.color?` · <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${item.color};vertical-align:-1px;border:1px solid #ddd;"></span>`:''}</div>
+        </div>
+        <div class="checkout-summary-item-price">${money(item.price*item.qty)}</div>
+      </div>
+    `).join('');
+    const { subtotal, shipping, total } = cartTotals(deliveryMethod);
+    subtotalEl.textContent = money(subtotal);
+    shippingEl.textContent = shipping===0 ? 'FREE' : money(shipping);
+    totalEl.textContent = money(total);
+  }
+
+  function openCheckout(){
+    if(state.cart.length===0){ showToast('Your cart is empty'); return; }
+    checkoutContent.innerHTML = checkoutForm.outerHTML; // reset form each open (in case of prior success screen)
+    bindCheckoutForm();
+    renderCheckoutSummary('courier');
+    cartOverlay.classList.remove('open');
+    checkoutOverlay.classList.add('open');
+    pushOverlayHistory();
+  }
+
+  function closeCheckout(){ checkoutOverlay.classList.remove('open'); consumeOverlayHistory(); }
+
+  $('[data-checkout]').addEventListener('click', e=>{ e.preventDefault(); openCheckout(); });
+  $('[data-checkout-close]').addEventListener('click', closeCheckout);
+  checkoutOverlay.addEventListener('click', e=>{ if(e.target===checkoutOverlay) closeCheckout(); });
+
+  const REQUIRED_FIELDS = {
+    fullName:'Enter your full name',
+    phone:'Enter a contact number',
+    email:'Enter a valid email address'
+  };
+  const COURIER_ADDRESS_FIELDS = {
+    address1:'Enter your street address',
+    city:'Enter your city',
+    province:'Select a province',
+    postalCode:'Enter your postal code'
+  };
+
+  function bindCheckoutForm(){
+    const form = $('[data-checkout-form]', checkoutContent);
+    const paxiField = $('[data-paxi-field]', form);
+    const addressFieldset = $('[data-address-fieldset]', form);
+
+    // Live-update the order summary + show/hide the PAXI Point number field
+    // (and hide the courier address block, since PAXI doesn't need it)
+    // whenever the shopper switches delivery method.
+    $$('input[name="deliveryMethod"]', form).forEach(radio=>{
+      radio.addEventListener('change', ()=>{
+        const method = radio.value;
+        paxiField.style.display = method==='courier' ? 'none' : '';
+        addressFieldset.style.display = method==='courier' ? '' : 'none';
+        renderCheckoutSummary(method);
+      });
+    });
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const data = new FormData(form);
+      const deliveryMethod = data.get('deliveryMethod') || 'courier';
+      let valid = true;
+
+      $$('.checkout-field', form).forEach(f=>f.classList.remove('error'));
+      $$('.field-error', form).forEach(el=>el.textContent='');
+
+      const requiredFields = { ...REQUIRED_FIELDS };
+      if(deliveryMethod==='courier') Object.assign(requiredFields, COURIER_ADDRESS_FIELDS);
+      if(deliveryMethod!=='courier') requiredFields.paxiNumber = 'Enter your PAXI Point number';
+
+      Object.entries(requiredFields).forEach(([name,msg])=>{
+        const val = (data.get(name) || '').toString().trim();
+        let ok = val.length>0;
+        if(ok && name==='email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        if(!ok){
+          valid = false;
+          const field = form.querySelector(`[data-field="${name}"]`);
+          if(field){
+            field.classList.add('error');
+            field.querySelector('.field-error').textContent = msg;
+          }
+        }
+      });
+
+      if(!valid){ showToast('Please fill in the required fields'); return; }
+
+      const order = {
+        fullName:data.get('fullName'), phone:data.get('phone'), email:data.get('email'),
+        address1:data.get('address1'), address2:data.get('address2'), city:data.get('city'),
+        province:data.get('province'), postalCode:data.get('postalCode'), country:data.get('country'),
+        deliveryMethod, paxiNumber:data.get('paxiNumber'),
+        items:state.cart.slice(), ...cartTotals(deliveryMethod)
+      };
+
+      sendOrderToWhatsApp(order);
+    });
+  }
+
+  const WHATSAPP_NUMBER = '27735726119'; // 0735726119 in international format
+
+  function buildWhatsAppMessage(order){
+    const lines = [];
+    lines.push(`*New Prodigal Son Order*`);
+    lines.push('');
+    lines.push(`*Customer:* ${order.fullName}`);
+    lines.push(`*Phone:* ${order.phone}`);
+    lines.push(`*Email:* ${order.email}`);
+    lines.push('');
+    if(order.deliveryMethod && order.deliveryMethod!=='courier'){
+      lines.push(`*Delivery Method:* ${DELIVERY_METHODS[order.deliveryMethod].label}`);
+      lines.push(`*PAXI Point Number:* ${order.paxiNumber}`);
+    } else {
+      lines.push(`*Shipping Address:*`);
+      lines.push(`${order.address1}${order.address2 ? ', ' + order.address2 : ''}`);
+      lines.push(`${order.city}, ${order.province}, ${order.postalCode}`);
+      lines.push(`${order.country}`);
+    }
+    lines.push('');
+    lines.push(`*Order Items:*`);
+    order.items.forEach(item=>{
+      lines.push(`• ${item.name} — Qty ${item.qty} — ${money(item.price*item.qty)}`);
+      // wa.me links can only pre-fill text, not attach files — so we drop
+      // the product photo URL in as a tappable link. WhatsApp will often
+      // render a preview thumbnail for it on the receiving end.
+      if(item.img) lines.push(`  Photo: ${item.img}`);
+    });
+    lines.push('');
+    lines.push(`Subtotal: ${money(order.subtotal)}`);
+    lines.push(`Shipping: ${order.shipping===0 ? 'FREE' : money(order.shipping)}`);
+    lines.push(`*Total: ${money(order.total)}*`);
+    return lines.join('\n');
+  }
+
+  function sendOrderToWhatsApp(order){
+    const message = buildWhatsAppMessage(order);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+    showOrderSuccess(order);
+  }
+
+  function showOrderSuccess(order){
+    checkoutContent.innerHTML = `
+      <div class="checkout-success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+        <h3>Order ready — thank you${order.fullName ? ', ' + order.fullName.split(' ')[0] : ''}!</h3>
+        <p>Your order summary for ${money(order.total)} has been opened in WhatsApp to send to us. Send the message to confirm your order — we'll get back to you to arrange payment and delivery.</p>
+        <button class="btn btn-primary" data-checkout-done style="justify-content:center;">CONTINUE SHOPPING</button>
+      </div>
+    `;
+    $('[data-checkout-done]', checkoutContent).addEventListener('click', ()=>{
+      closeCheckout();
+      state.cart = [];
+      renderCart();
+    });
+    showToast('Order summary sent to WhatsApp');
+  }
+
+  /* ---------- PRODUCT DETAIL PAGE ---------- */
+  const PDP_COLORS = ["#8c8c8c","#2b2b2b","#c9a13b","#a3a15a","#d98080"];
+  const SIZES = ["S","M","L","XL"];
+  const PRINT_UPCHARGE = 80; // Front & Back print costs +R80 over the Front Only price
+  const pdpOverlay = $('[data-pdp-overlay]');
+  const pdpState = { productId:null, colorIndex:0, size:null, qty:1, printStyle:null };
+
+  // Renders the big gallery image + angle thumbnail strip for a product at
+  // a given color index. Pulled out of openPDP() so the PDP color-swatch
+  // handler can also call it when the shopper switches colors, without
+  // duplicating the thumbnail-building logic.
+  function renderPdpGallery(product, colorIndex){
+    // Products with real per-color photos (PR Hoodie's Black/Pink/White)
+    // show all of those colorway thumbnails side by side at once, so
+    // shoppers can see every option — not just whichever one the color
+    // swatch/button last pointed the single thumbnail at.
+    if(product.colorImages){
+      const current = product.colorImages[colorIndex] || product.colorImages[0];
+      $('[data-pdp-main-img]').src = current.front;
+      $('[data-pdp-main-img]').alt = product.name + ' — front view';
+      $('[data-pdp-thumbs]').innerHTML = product.colorImages.map((ci,i)=>`
+        <div class="pdp-thumb ${i===colorIndex?'selected':''}" data-pdp-thumb-color="${i}">
+          <img src="${ci.front}" alt="${product.name} — colorway ${i+1} view">
+        </div>
+      `).join('');
+      return;
+    }
+
+    const imgs = getImagesFor(product, colorIndex);
+    $('[data-pdp-main-img]').src = imgs.front;
+    $('[data-pdp-main-img]').alt = product.name + ' — front view';
+    // Same aspect-ratio fix as the card grid: this photo isn't cropped
+    // square like the others, so force contain-fit instead of cover so
+    // nothing gets chopped off in the big PDP gallery image either.
+    $('[data-pdp-main-img]').style.objectFit = product.fit === 'contain' ? 'contain' : '';
+    $('[data-pdp-main-img]').style.background = product.fit === 'contain' ? '#f4f4f4' : '';
+
+    // Build the angle thumbnail strip (front / side / back) — only for
+    // whichever angles this product actually has photos for.
+    const ANGLES = [
+      { key:'front', label:'FRONT' },
+      { key:'side',  label:'SIDE'  },
+      { key:'back',  label:'BACK'  }
+    ].filter(a => imgs[a.key]);
+    $('[data-pdp-thumbs]').innerHTML = ANGLES.map((a,i)=>`
+      <div class="pdp-thumb ${i===0?'selected':''}" data-pdp-thumb="${i}" data-pdp-thumb-src="${imgs[a.key]}">
+        <img src="${imgs[a.key]}" alt="${product.name} — ${a.label.toLowerCase()} view">
+        <span class="pdp-thumb-label">${a.label}</span>
+      </div>
+    `).join('');
+  }
+
+  function openPDP(productId){
+    const product = PRODUCTS.find(p=>p.id===productId);
+    if(!product) return;
+    // Per-product overrides: most products share the global PDP_COLORS /
+    // SIZES lists, but a product can supply its own `colors` (e.g. a
+    // single-color item like the red Beanie) or `sizes` (e.g. "One Size" /
+    // "Large" instead of S/M/L/XL).
+    const colorList = product.colors || PDP_COLORS;
+    const sizeList = product.sizes || SIZES;
+    // Open on whichever color was actually selected on the product card
+    // (state.selectedColor), not always the first swatch — otherwise the
+    // popup can show/mark a different color than the one the shopper chose.
+    const startColorIndex = state.selectedColor[productId] ?? 0;
+    pdpState.productId = productId;
+    pdpState.colorIndex = startColorIndex;
+    pdpState.colorList = colorList;
+    // Nothing pre-selected for size or print style — the shopper must
+    // actively choose both before they can add the item to their cart.
+    pdpState.size = null;
+    pdpState.qty = 1;
+    pdpState.printStyle = null;
+
+    $('[data-pdp-title]').textContent = product.name;
+    $('[data-pdp-price]').textContent = money(product.price);
+    $('[data-pdp-stock]').textContent = '32 in Stock';
+    // Fall back to the generic description only when a product doesn't
+    // have its own — most products still share it, but some (like the
+    // Society Hoodie) get something written specifically for them.
+    $('[data-pdp-desc-text]').textContent = product.description ||
+      'A versatile piece designed for everyday comfort. Features a clean silhouette, premium construction, and easy layering for any season.';
+    // T-Shirts come in far more colors than we've photographed/listed —
+    // rather than build a full color-availability checker, we just point
+    // shoppers straight to WhatsApp so they can ask about a color that
+    // isn't shown here.
+    const colorCheckEl = $('[data-pdp-color-check]');
+    if(product.category === "T-Shirts"){
+      colorCheckEl.style.display = '';
+      const msg = encodeURIComponent(`Hi! Is the ${product.name} available in another color?`);
+      $('[data-pdp-color-check-link]').href = `https://wa.me/27726190190?text=${msg}`;
+    } else {
+      colorCheckEl.style.display = 'none';
+    }
+    // Delivery estimate is per-product — most items ship within 4 days,
+    // but some (like the windbreakers, sent via courier from a different
+    // supplier) take longer.
+    const days = product.deliveryDays || 4;
+    $('[data-pdp-delivery-estimate]').textContent = `Within ${days} Day${days===1?'':'s'}`;
+
+    renderPdpGallery(product, startColorIndex);
+    $('[data-pdp-size-block]')?.classList.remove('pdp-select-error');
+    $('[data-pdp-print-block]')?.classList.remove('pdp-select-error');
+
+    // Print Style picker — only for hoodies flagged `printOptional`, where
+    // the back print is a genuine add-on (not just an extra outfit photo
+    // like the cargo pants' back angle). Front & Back costs +R80. Neither
+    // option starts selected — the shopper has to pick one.
+    const printBlock = $('[data-pdp-print-block]');
+    if(product.printOptional){
+      printBlock.style.display = '';
+      $('[data-pdp-print]').innerHTML = `
+        <button class="pdp-print-btn" data-pdp-print-style="front">Front Only<span>${money(product.price)}</span></button>
+        <button class="pdp-print-btn" data-pdp-print-style="both">Front &amp; Back<span>${money(product.price + PRINT_UPCHARGE)}</span></button>
+      `;
+    } else {
+      printBlock.style.display = 'none';
+      $('[data-pdp-print]').innerHTML = '';
+    }
+
+    // Only show the color picker when there's actually more than one color
+    // to choose from — a single-color product (like the red Beanie) hides
+    // this block entirely instead of showing a picker with nothing to pick.
+    const colorBlock = $('[data-pdp-color-block]');
+    if(colorList.length > 1){
+      colorBlock.style.display = '';
+      $('[data-pdp-colors]').innerHTML = colorList.map((c,i)=>`
+        <button class="pdp-color-swatch ${i===startColorIndex?'selected':''}" style="background:${c}" data-pdp-color="${i}" aria-label="Select color"></button>
+      `).join('');
+    } else {
+      colorBlock.style.display = 'none';
+      $('[data-pdp-colors]').innerHTML = '';
+    }
+
+    $('[data-pdp-sizes]').innerHTML = sizeList.map(s=>`
+      <button class="pdp-size-btn ${s===pdpState.size?'selected':''}" data-pdp-size="${s}">${s}</button>
+    `).join('');
+
+    $('[data-pdp-qty]').textContent = '01';
+    updatePdpFavIcon();
+
+    pdpOverlay.classList.add('open');
+    pdpOverlay.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    pushOverlayHistory();
+  }
+
+  function closePDP(){
+    pdpOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function updatePdpFavIcon(){
+    const favBtn = $('[data-pdp-fav]');
+    const active = state.wishlist.has(pdpState.productId);
+    favBtn.classList.toggle('active', active);
+    favBtn.querySelector('svg').setAttribute('fill', active ? 'currentColor' : 'none');
+  }
+
+  $('[data-pdp-close]').addEventListener('click', e=>{ e.preventDefault(); closePDP(); consumeOverlayHistory(); });
+
+  $('[data-pdp-thumbs]').addEventListener('click', e=>{
+    // Colorway thumbnail (PR Hoodie-style products showing all colors
+    // side by side) — clicking one switches the selected color, same as
+    // clicking the matching swatch above.
+    const colorThumb = e.target.closest('[data-pdp-thumb-color]');
+    if(colorThumb){
+      const i = Number(colorThumb.dataset.pdpThumbColor);
+      pdpState.colorIndex = i;
+      state.selectedColor[pdpState.productId] = i;
+      $$('.pdp-color-swatch').forEach((s,idx)=>s.classList.toggle('selected', idx===i));
+      const product = PRODUCTS.find(p=>p.id===pdpState.productId);
+      renderPdpGallery(product, i);
+      return;
+    }
+    const thumb = e.target.closest('[data-pdp-thumb]');
+    if(!thumb) return;
+    $$('.pdp-thumb').forEach(t=>t.classList.remove('selected'));
+    thumb.classList.add('selected');
+    // Swap the big gallery image to whichever angle (front/side/back) was clicked.
+    const mainImg = $('[data-pdp-main-img]');
+    mainImg.src = thumb.dataset.pdpThumbSrc;
+  });
+
+  $('[data-pdp-colors]').addEventListener('click', e=>{
+    const sw = e.target.closest('[data-pdp-color]');
+    if(!sw) return;
+    pdpState.colorIndex = Number(sw.dataset.pdpColor);
+    // Keep the product-grid card's swatch selection in sync with whatever
+    // is chosen here, so re-opening the popup (or looking at the card
+    // behind it) reflects the true, currently-selected color.
+    state.selectedColor[pdpState.productId] = pdpState.colorIndex;
+    $$('.pdp-color-swatch').forEach(s=>s.classList.remove('selected'));
+    sw.classList.add('selected');
+    // Swap the gallery to match the newly selected color (e.g. PR Hoodie
+    // switching between its Black/Pink/White photos, or re-highlighting
+    // the matching colorway thumbnail).
+    const product = PRODUCTS.find(p=>p.id===pdpState.productId);
+    renderPdpGallery(product, pdpState.colorIndex);
+  });
+
+  $('[data-pdp-print]').addEventListener('click', e=>{
+    const btn = e.target.closest('[data-pdp-print-style]');
+    if(!btn) return;
+    pdpState.printStyle = btn.dataset.pdpPrintStyle;
+    $$('.pdp-print-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    $('[data-pdp-print-block]').classList.remove('pdp-select-error');
+    $('[data-pdp-print-error]').textContent = '';
+    // Reflect the surcharge in the big price display immediately.
+    const product = PRODUCTS.find(p=>p.id===pdpState.productId);
+    const price = pdpState.printStyle==='both' ? product.price + PRINT_UPCHARGE : product.price;
+    $('[data-pdp-price]').textContent = money(price);
+  });
+
+  $('[data-pdp-sizes]').addEventListener('click', e=>{
+    const sb = e.target.closest('[data-pdp-size]');
+    if(!sb) return;
+    pdpState.size = sb.dataset.pdpSize;
+    $$('.pdp-size-btn').forEach(s=>s.classList.remove('selected'));
+    sb.classList.add('selected');
+    $('[data-pdp-size-block]').classList.remove('pdp-select-error');
+    $('[data-pdp-size-error]').textContent = '';
+  });
+
+  $('[data-pdp-qty-inc]').addEventListener('click', ()=>{
+    pdpState.qty++;
+    $('[data-pdp-qty]').textContent = String(pdpState.qty).padStart(2,'0');
+  });
+  $('[data-pdp-qty-dec]').addEventListener('click', ()=>{
+    pdpState.qty = Math.max(1, pdpState.qty-1);
+    $('[data-pdp-qty]').textContent = String(pdpState.qty).padStart(2,'0');
+  });
+
+  $('[data-pdp-fav]').addEventListener('click', ()=>{
+    if(state.wishlist.has(pdpState.productId)) state.wishlist.delete(pdpState.productId);
+    else state.wishlist.add(pdpState.productId);
+    updatePdpFavIcon();
+    renderProducts(currentGridProducts());
+  });
+
+  function currentGridProducts(){
+    const ids = $$('[data-product-card]').map(c=>c.dataset.productCard);
+    return ids.length ? PRODUCTS.filter(p=>ids.includes(p.id)) : PRODUCTS;
+  }
+
+  $('[data-pdp-add]').addEventListener('click', ()=>{
+    const product = PRODUCTS.find(p=>p.id===pdpState.productId);
+
+    // Size and (when applicable) print style are required — nothing is
+    // pre-selected, so block the add and flag whichever choice is missing
+    // instead of silently defaulting to the first option.
+    let valid = true;
+    const sizeBlock = $('[data-pdp-size-block]');
+    const sizeError = $('[data-pdp-size-error]');
+    if(!pdpState.size){
+      valid = false;
+      sizeBlock.classList.add('pdp-select-error');
+      sizeError.textContent = 'Please select a size';
+    } else {
+      sizeBlock.classList.remove('pdp-select-error');
+      sizeError.textContent = '';
+    }
+    if(product.printOptional){
+      const printBlock = $('[data-pdp-print-block]');
+      const printError = $('[data-pdp-print-error]');
+      if(!pdpState.printStyle){
+        valid = false;
+        printBlock.classList.add('pdp-select-error');
+        printError.textContent = 'Please select a print style';
+      } else {
+        printBlock.classList.remove('pdp-select-error');
+        printError.textContent = '';
+      }
+    }
+    if(!valid){ showToast('Please make your selections before adding to cart'); return; }
+
+    const isBothPrint = product.printOptional && pdpState.printStyle==='both';
+    const price = isBothPrint ? product.price + PRINT_UPCHARGE : product.price;
+    const printLabel = isBothPrint ? ' — Front & Back Print' : '';
+    const key = product.id + '-' + pdpState.colorIndex + '-' + pdpState.size + '-' + pdpState.printStyle;
+    const existing = state.cart.find(i=>i.key===key);
+    if(existing){ existing.qty += pdpState.qty; }
+    else {
+      state.cart.push({
+        key, id:product.id, name:`${product.name} (${pdpState.size})${printLabel}`, price,
+        img:getImagesFor(product, pdpState.colorIndex).front, color:pdpState.colorList[pdpState.colorIndex], qty:pdpState.qty
+      });
+    }
+    renderCart();
+    $('[data-pdp-cart-count]').textContent = state.cart.reduce((s,i)=>s+i.qty,0);
+    showToast(`${product.name} added to cart`);
+    closePDP();
+    cartOverlay.classList.add('open');
+  });
+
+  $('[data-pdp-cart-open]').addEventListener('click', ()=>{
+    closePDP();
+    cartOverlay.classList.add('open');
+  });
+
+  /* ---------- SEARCH ---------- */
+  const searchOverlay = $('[data-search-overlay]');
+  const searchInput = $('[data-search-input]');
+  const searchResults = $('[data-search-results]');
+
+  $('[data-search-open]').addEventListener('click', ()=>{
+    searchOverlay.classList.add('open');
+    setTimeout(()=>searchInput.focus(),50);
+    pushOverlayHistory();
+  });
+  $('[data-search-close]').addEventListener('click', closeSearch);
+  searchOverlay.addEventListener('click', e=>{ if(e.target===searchOverlay) closeSearch(); });
+  document.addEventListener('keydown', e=>{
+    // Escape closes whatever overlay is currently open (search, PDP, cart,
+    // checkout, or the mobile menu) and consumes the pushed history entry
+    // so the Back button doesn't then act on a stale state.
+    if(e.key==='Escape'){
+      hideAllOverlaysNow();
+      searchInput.value=''; searchResults.innerHTML='Start typing to search the catalog.';
+      document.body.style.overflow = '';
+      consumeOverlayHistory();
+    }
+  });
+  function closeSearch(){ searchOverlay.classList.remove('open'); searchInput.value=''; searchResults.innerHTML='Start typing to search the catalog.'; consumeOverlayHistory(); }
+
+  searchInput.addEventListener('input', ()=>{
+    const q = searchInput.value.trim().toLowerCase();
+    if(!q){ searchResults.innerHTML = 'Start typing to search the catalog.'; return; }
+    const hits = PRODUCTS.filter(p=> p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    searchResults.innerHTML = hits.length
+      ? hits.map(p=>`<div class="hit" data-search-hit="${p.id}"><span>${p.name}</span><span>${money(p.price)}</span></div>`).join('')
+      : `No results for "${q}"`;
+  });
+  $('[data-search-form]').addEventListener('submit', e=> e.preventDefault());
+  searchResults.addEventListener('click', e=>{
+    const hit = e.target.closest('[data-search-hit]');
+    if(!hit) return;
+    closeSearch();
+    renderProducts(PRODUCTS);
+    document.getElementById('new-arrivals').scrollIntoView({behavior:'smooth'});
+    const card = productGrid.querySelector(`[data-product-card="${hit.dataset.searchHit}"]`);
+    if(card){ card.style.outline='2px solid #c6ff2e'; setTimeout(()=>card.style.outline='',1400); }
+  });
+
+  /* ---------- MOBILE NAV ---------- */
+  const nav = $('[data-nav]');
+  const scrim = $('[data-nav-scrim]');
+  $('[data-menu-toggle]').addEventListener('click', ()=>{
+    nav.classList.add('open'); scrim.classList.add('open');
+    pushOverlayHistory();
+  });
+  scrim.addEventListener('click', closeNav);
+  function closeNav(){ nav.classList.remove('open'); scrim.classList.remove('open'); consumeOverlayHistory(); }
+  $$('[data-nav] a:not([data-dd-trigger])').forEach(a=>a.addEventListener('click', closeNav));
+
+  // mobile dropdown toggle
+  const ddWrap = $('[data-dropdown]');
+  $('[data-dd-trigger]').addEventListener('click', e=>{
+    if(window.innerWidth <= 860){
+      e.preventDefault();
+      ddWrap.classList.toggle('open');
+    }
+  });
+
+  /* Category quick-links (nav + footer) that jump + filter */
+  $$('a[data-cat]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      closeNav();
+      filterByCategory(a.dataset.cat);
+    });
+  });
+
+  /* ---------- NEWSLETTER ---------- */
+  $('[data-newsletter-form]').addEventListener('submit', e=>{
+    e.preventDefault();
+    const input = $('[data-newsletter-input]');
+    const msg = $('[data-newsletter-msg]');
+    const val = input.value.trim();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if(!valid){ msg.style.color = '#ff6b6b'; msg.textContent = 'Please enter a valid email address.'; return; }
+    msg.style.color = '#c6ff2e';
+    msg.textContent = `You're in! Confirmation sent to ${val}.`;
+    input.value='';
+  });
+
+  /* ---------- PLACEHOLDER LINKS (Help / Track / About / Sale) ---------- */
+  $$('[data-help]').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); showToast('Help & Support — demo link'); }));
+  $$('[data-track]').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); showToast('Order tracking — demo link'); }));
+  $$('[data-about]').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); showToast('About Us — demo link'); }));
+  $$('[data-sale]').forEach(a=>a.addEventListener('click', ()=> closeNav()));
+
+  /* ---------- TOAST ---------- */
+  const toastEl = $('[data-toast]');
+  const toastMsg = $('[data-toast-msg]');
+  let toastTimer;
+  function showToast(text){
+    clearTimeout(toastTimer);
+    toastMsg.textContent = text;
+    toastEl.classList.add('show');
+    toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2400);
+  }
+
+  /* ---------- FOOTER YEAR ---------- */
+  $('[data-year]').textContent = new Date().getFullYear();
+
+  /* ---------- BACK BUTTON HANDLING ----------
+     Overlays (cart, checkout, PDP, search, mobile menu) are just CSS
+     classes toggled on divs — as far as the browser's history is
+     concerned nothing has happened, so the phone/PC Back button has
+     nothing to "undo" except leaving the page entirely. We fix that by
+     pushing one dummy history entry the moment any overlay first opens.
+     Back then closes the overlay instead of exiting the site. Explicit
+     in-app close actions (X buttons, backdrop clicks, Escape) consume
+     that same entry so a second overlay can push its own fresh one. */
+  let overlayHistoryActive = false;
+  function pushOverlayHistory(){
+    if(!overlayHistoryActive){
+      overlayHistoryActive = true;
+      history.pushState({ urbanxOverlay:true }, '');
+    }
+  }
+  function consumeOverlayHistory(){
+    if(overlayHistoryActive){
+      overlayHistoryActive = false;
+      history.back();
+    }
+  }
+  function hideAllOverlaysNow(){
+    cartOverlay.classList.remove('open');
+    checkoutOverlay.classList.remove('open');
+    pdpOverlay.classList.remove('open');
+    searchOverlay.classList.remove('open');
+    nav.classList.remove('open');
+    scrim.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.addEventListener('popstate', ()=>{
+    overlayHistoryActive = false;
+    hideAllOverlaysNow();
+  });
+
+})();
+</script>
+</body>
+</html>
