@@ -960,6 +960,11 @@
             <div class="pdp-print-row" data-pdp-print></div>
             <span class="pdp-select-error-msg" data-pdp-print-error></span>
           </div>
+          <div data-pdp-set-block style="display:none;">
+            <div class="pdp-select-label">Select Option</div>
+            <div class="pdp-print-row" data-pdp-set></div>
+            <span class="pdp-select-error-msg" data-pdp-set-error></span>
+          </div>
           <div data-pdp-size-block>
             <div class="pdp-select-label">Select Size</div>
             <div class="pdp-size-row" data-pdp-sizes></div>
@@ -1159,7 +1164,7 @@
     { name:"Hoodies",     img:"https://i.postimg.cc/QMd5mPn7/BLACKONe.png" },
     { name:"T-Shirts",    img:"https://i.postimg.cc/KjKgGssx/Red(front).png" },
     { name:"Pants",       img:"https://cdn.imgpile.com/f/V2FVW2T_lg.webp" },
-    { name:"Tracksuits",  img:"https://cdn.imgpile.com/f/g5ZsKzs_lg.webp" },
+    { name:"Tracksuits",  img:"https://i.postimg.cc/x1qXjGdQ/Full-Black-BLUE.png" },
     { name:"Jackets",     img:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png" },
     { name:"Accessories", img:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop" }
   ];
@@ -1435,36 +1440,47 @@
       colors:["#f2c94c"], sizes:["S","M","L","XL"],
       images:{ front:"https://cdn.imgpile.com/f/YtgyhoU_lg.webp" }
     },
-    { id:"tk1", name:"PRS Tracksuit — Black & Blue", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    // Tracksuits are sold three ways: Top only (R450), Pants only
+    // (R450 — not yet confirmed by the client, assumed to match the top;
+    // flag for correction), or the Full matching set (R800). `setPricing`
+    // drives the "Select Option" picker on the PDP; `price` stays as the
+    // Full-set price since that's what's shown on the product card.
+    // Dedicated top/pants-only photos haven't been sent yet, so all three
+    // options fall back to this same full-outfit shot until they arrive.
+    { id:"tk1", name:"PRS Tracksuit — Black & Blue", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#111111","#3a5fa8"],
-      images:{ front:"https://cdn.imgpile.com/f/g5ZsKzs_lg.webp" }
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
+      images:{ front:"https://i.postimg.cc/x1qXjGdQ/Full-Black-BLUE.png" }
     },
-    { id:"tk2", name:"PRS Tracksuit — Black & Green", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    { id:"tk2", name:"PRS Tracksuit — Black & Green", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#111111","#3f7d4a"],
-      images:{ front:"https://cdn.imgpile.com/f/9klaiSn_lg.webp" }
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
+      images:{ front:"https://i.postimg.cc/wjtBY6Wq/Full-Black-Green.png" }
     },
-    { id:"tk3", name:"PRS Tracksuit — Pink & Red", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    { id:"tk3", name:"PRS Tracksuit — Pink & Red", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#f2a6c8","#c81e2c"],
-      fit:"contain",
-      images:{ front:"https://cdn.imgpile.com/f/BUmPBwU_xl.webp" }
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
+      images:{ front:"https://i.postimg.cc/zfZqmTHY/Full-PINKRED.png" }
     },
-    { id:"tk4", name:"PRS Tracksuit — Red & Grey", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    { id:"tk4", name:"PRS Tracksuit — Red & Grey", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#c81e2c","#8a8a8a"],
-      images:{ front:"https://cdn.imgpile.com/f/y5zqP8g_lg.webp" }
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
+      images:{ front:"https://i.postimg.cc/dVGzyp36/Full-REDGREY.png" }
     },
-    { id:"tk5", name:"PRS Tracksuit — White & Blue", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    { id:"tk5", name:"PRS Tracksuit — White & Blue", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#ffffff","#3a5fa8"],
-      fit:"contain",
-      images:{ front:"https://cdn.imgpile.com/f/qyqSJjT_lg.webp" }
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
+      images:{ front:"https://i.postimg.cc/TYd99stj/Full-White-Blue.png" }
     },
-    { id:"tk6", name:"PRS Tracksuit — Black & Red", price:380.00, category:"Tracksuits",
-      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street.",
+    { id:"tk6", name:"PRS Tracksuit — Black & Red", price:800.00, category:"Tracksuits",
+      description:"Matching two-piece tracksuit set — zip-through jacket and jogger pants in a heavyweight brushed fleece, finished with Prodigal Son branding. Built for comfort on and off the street. Available as the top only, the pants only, or the full matching set.",
       colors:["#111111","#c81e2c"],
+      setPricing:{ top:450.00, pants:450.00, full:800.00 },
       images:{ front:"https://cdn.imgpile.com/f/O54HvJC_lg.webp" }
     },
     { id:"p5", name:"Prodigal Son Cap — Black", price:299, category:"Accessories",
@@ -1704,6 +1720,10 @@
     if(addBtn){
       const id = addBtn.dataset.addCart;
       const product = PRODUCTS.find(p=>p.id===id);
+      // Tracksuits need a Top/Pants/Full choice before a price can even be
+      // set — send those straight into the PDP instead of quick-adding at
+      // a guessed price.
+      if(product.setPricing){ openPDP(id); return; }
       addToCart(product, state.selectedColor[id] ?? 0);
       return;
     }
@@ -1987,7 +2007,7 @@
   const SIZES = ["S","M","L","XL"];
   const PRINT_UPCHARGE = 80; // Front & Back print costs +R80 over the Front Only price
   const pdpOverlay = $('[data-pdp-overlay]');
-  const pdpState = { productId:null, colorIndex:0, size:null, qty:1, printStyle:null };
+  const pdpState = { productId:null, colorIndex:0, size:null, qty:1, printStyle:null, setOption:null };
 
   // Renders the big gallery image + angle thumbnail strip for a product at
   // a given color index. Pulled out of openPDP() so the PDP color-swatch
@@ -2055,9 +2075,10 @@
     pdpState.size = null;
     pdpState.qty = 1;
     pdpState.printStyle = null;
+    pdpState.setOption = null;
 
     $('[data-pdp-title]').textContent = product.name;
-    $('[data-pdp-price]').textContent = money(product.price);
+    $('[data-pdp-price]').textContent = product.setPricing ? money(product.setPricing.full) : money(product.price);
     $('[data-pdp-stock]').textContent = '32 in Stock';
     // Fall back to the generic description only when a product doesn't
     // have its own — most products still share it, but some (like the
@@ -2100,6 +2121,23 @@
     } else {
       printBlock.style.display = 'none';
       $('[data-pdp-print]').innerHTML = '';
+    }
+
+    // Select Option picker — Tracksuits only, via `setPricing`. Nothing is
+    // pre-selected, matching the Print Style picker's pattern: the shopper
+    // must actively choose Top / Pants / Full before adding to cart, since
+    // the price swings a lot between them.
+    const setBlock = $('[data-pdp-set-block]');
+    if(product.setPricing){
+      setBlock.style.display = '';
+      $('[data-pdp-set]').innerHTML = `
+        <button class="pdp-print-btn" data-pdp-set-option="top">Top Only<span>${money(product.setPricing.top)}</span></button>
+        <button class="pdp-print-btn" data-pdp-set-option="pants">Pants Only<span>${money(product.setPricing.pants)}</span></button>
+        <button class="pdp-print-btn" data-pdp-set-option="full">Full Set<span>${money(product.setPricing.full)}</span></button>
+      `;
+    } else {
+      setBlock.style.display = 'none';
+      $('[data-pdp-set]').innerHTML = '';
     }
 
     // Only show the color picker when there's actually more than one color
@@ -2197,6 +2235,24 @@
     $('[data-pdp-price]').textContent = money(price);
   });
 
+  $('[data-pdp-set]').addEventListener('click', e=>{
+    const btn = e.target.closest('[data-pdp-set-option]');
+    if(!btn) return;
+    pdpState.setOption = btn.dataset.pdpSetOption;
+    $$('[data-pdp-set] .pdp-print-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    $('[data-pdp-set-block]').classList.remove('pdp-select-error');
+    $('[data-pdp-set-error]').textContent = '';
+    const product = PRODUCTS.find(p=>p.id===pdpState.productId);
+    $('[data-pdp-price]').textContent = money(product.setPricing[pdpState.setOption]);
+    // Swap the gallery photo to match, when a dedicated top/pants shot
+    // exists — falls back to the full-outfit photo otherwise (top/pants
+    // solo photos haven't been supplied yet for these).
+    const imgs = getImagesFor(product, pdpState.colorIndex);
+    const swapImg = product.images[pdpState.setOption] || imgs.front;
+    $('[data-pdp-main-img]').src = swapImg;
+  });
+
   $('[data-pdp-sizes]').addEventListener('click', e=>{
     const sb = e.target.closest('[data-pdp-size]');
     if(!sb) return;
@@ -2257,18 +2313,34 @@
         printError.textContent = '';
       }
     }
+    if(product.setPricing){
+      const setBlock = $('[data-pdp-set-block]');
+      const setError = $('[data-pdp-set-error]');
+      if(!pdpState.setOption){
+        valid = false;
+        setBlock.classList.add('pdp-select-error');
+        setError.textContent = 'Please select Top, Pants, or Full Set';
+      } else {
+        setBlock.classList.remove('pdp-select-error');
+        setError.textContent = '';
+      }
+    }
     if(!valid){ showToast('Please make your selections before adding to cart'); return; }
 
     const isBothPrint = product.printOptional && pdpState.printStyle==='both';
-    const price = isBothPrint ? product.price + PRINT_UPCHARGE : product.price;
-    const printLabel = isBothPrint ? ' — Front & Back Print' : '';
-    const key = product.id + '-' + pdpState.colorIndex + '-' + pdpState.size + '-' + pdpState.printStyle;
+    const setLabels = { top:' — Top Only', pants:' — Pants Only', full:' — Full Set' };
+    const price = product.setPricing ? product.setPricing[pdpState.setOption]
+      : (isBothPrint ? product.price + PRINT_UPCHARGE : product.price);
+    const printLabel = isBothPrint ? ' — Front & Back Print' : (product.setPricing ? setLabels[pdpState.setOption] : '');
+    const key = product.id + '-' + pdpState.colorIndex + '-' + pdpState.size + '-' + pdpState.printStyle + '-' + pdpState.setOption;
     const existing = state.cart.find(i=>i.key===key);
     if(existing){ existing.qty += pdpState.qty; }
     else {
+      const imgs = getImagesFor(product, pdpState.colorIndex);
+      const cartImg = (product.setPricing && product.images[pdpState.setOption]) || imgs.front;
       state.cart.push({
         key, id:product.id, name:`${product.name} (${pdpState.size})${printLabel}`, price,
-        img:getImagesFor(product, pdpState.colorIndex).front, color:pdpState.colorList[pdpState.colorIndex], qty:pdpState.qty
+        img:cartImg, color:pdpState.colorList[pdpState.colorIndex], qty:pdpState.qty
       });
     }
     renderCart();
