@@ -1485,6 +1485,52 @@
       setPricing:{ top:450.00, pants:380.00, full:800.00 },
       images:{ front:"https://i.postimg.cc/d3VLQmL0/Full-Black-Red.png" }
     },
+    // PRS Shorts Tracksuit — crewneck sweatshirt + matching shorts (rather
+    // than the full-length pants pairing above). Sold the same three ways,
+    // but different pricing: Top R350, Shorts R300, Full Set R650.
+    // `bottomLabel` swaps "Pants Only" to "Shorts Only" on the picker.
+    { id:"tk7", name:"PRS Shorts Tracksuit — Black & Blue", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#111111","#3a5fa8"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/25wgD4WJ/Black-Blue.png" }
+    },
+    { id:"tk8", name:"PRS Shorts Tracksuit — Black & Red", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#111111","#c81e2c"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/zDM68DLx/Black-Red.png" }
+    },
+    { id:"tk9", name:"PRS Shorts Tracksuit — Green & Red", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#1f4d3a","#c81e2c"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/DyXDZVLh/GReen-Red.png" }
+    },
+    { id:"tk10", name:"PRS Shorts Tracksuit — Pink & Red", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#f2a6c8","#c81e2c"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/C12PhJKz/Pink-Red.png" }
+    },
+    { id:"tk11", name:"PRS Shorts Tracksuit — Red & Grey", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#c81e2c","#8a8a8a"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/5jdsv0vg/Red-Grey.png" }
+    },
+    { id:"tk12", name:"PRS Shorts Tracksuit — White & Blue", price:650.00, category:"Tracksuits",
+      description:"Crewneck sweatshirt and matching shorts set in heavyweight brushed cotton — ribbed collar and cuffs, contrast side stripe, and embroidered PRS branding. Available as the top only, the shorts only, or the full matching set.",
+      colors:["#ffffff","#3a5fa8"],
+      setPricing:{ top:350.00, pants:300.00, full:650.00 },
+      bottomLabel:"Shorts",
+      images:{ front:"https://i.postimg.cc/Hk2CYD1W/White-Blue.png" }
+    },
     { id:"p5", name:"Prodigal Son Cap — Black", price:299, category:"Accessories",
       images:{
         front:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop",
@@ -2132,9 +2178,14 @@
     const setBlock = $('[data-pdp-set-block]');
     if(product.setPricing){
       setBlock.style.display = '';
+      // Most tracksuits pair a top with pants, but the shorts-set line
+      // pairs a top with shorts instead — `bottomLabel` lets a product
+      // override the second option's label without needing a whole
+      // separate pricing structure.
+      const bottomLabel = product.bottomLabel || 'Pants';
       $('[data-pdp-set]').innerHTML = `
         <button class="pdp-print-btn" data-pdp-set-option="top">Top Only<span>${money(product.setPricing.top)}</span></button>
-        <button class="pdp-print-btn" data-pdp-set-option="pants">Pants Only<span>${money(product.setPricing.pants)}</span></button>
+        <button class="pdp-print-btn" data-pdp-set-option="pants">${bottomLabel} Only<span>${money(product.setPricing.pants)}</span></button>
         <button class="pdp-print-btn" data-pdp-set-option="full">Full Set<span>${money(product.setPricing.full)}</span></button>
       `;
     } else {
@@ -2330,7 +2381,8 @@
     if(!valid){ showToast('Please make your selections before adding to cart'); return; }
 
     const isBothPrint = product.printOptional && pdpState.printStyle==='both';
-    const setLabels = { top:' — Top Only', pants:' — Pants Only', full:' — Full Set' };
+    const bottomLabel = product.bottomLabel || 'Pants';
+    const setLabels = { top:' — Top Only', pants:` — ${bottomLabel} Only`, full:' — Full Set' };
     const price = product.setPricing ? product.setPricing[pdpState.setOption]
       : (isBothPrint ? product.price + PRINT_UPCHARGE : product.price);
     const printLabel = isBothPrint ? ' — Front & Back Print' : (product.setPricing ? setLabels[pdpState.setOption] : '');
