@@ -1166,7 +1166,7 @@
     { name:"Pants",       img:"https://cdn.imgpile.com/f/V2FVW2T_lg.webp" },
     { name:"Tracksuits",  img:"https://i.postimg.cc/x1qXjGdQ/Full-Black-BLUE.png" },
     { name:"Jackets",     img:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png" },
-    { name:"Accessories", img:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop" }
+    { name:"Accessories", img:"https://i.postimg.cc/Fs5cdxZ6/GBlack.png" }
   ];
 
   // Swatch colors offered on every product card (shared across all products).
@@ -1532,26 +1532,11 @@
       bottomLabel:"Shorts",
       images:{ front:"https://i.postimg.cc/Hk2CYD1W/White-Blue.png" }
     },
-    { id:"p5", name:"Prodigal Son Cap — Black", price:299, category:"Accessories",
-      images:{
-        front:"https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop",
-        side: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
-        back: "https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=600&auto=format&fit=crop"
-      }
-    },
     { id:"p6", name:"Society Hoodie — White", price:400, category:"Hoodies",
       printOptional:true,
       description:"A heavyweight, premium-cut hoodie built for those who stand out in a crowd. Brushed fleece interior, reinforced stitching, and a boxier silhouette than our core PR line — this is the one you reach for when you want the elevated version.",
       colors:["#ffffff"],
       images:{ front:"https://cdn.imgpile.com/f/tWJv2s0_lg.webp", back:"https://cdn.imgpile.com/f/iNePNom_lg.webp" }
-    },
-    // Extra accessory so "Accessories" isn't carried by the cap alone.
-    { id:"p9", name:"Canvas Tote Bag — Sand", price:249, category:"Accessories",
-      images:{
-        front:"https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop",
-        side: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=600&auto=format&fit=crop",
-        back: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600&auto=format&fit=crop"
-      }
     },
     // The beanie collection: each colorway is single-color, so all three
     // override `colors` (hides the swatch/color picker) and use their own
@@ -1582,6 +1567,37 @@
         side: "https://i.postimg.cc/FzQtwTR9/beanie-White(side).png",
         back: "https://i.postimg.cc/cHw27fcp/beanie-White(back).png"
       }
+    },
+    // PRS Caps — R180, unisex, six colorways.
+    { id:"p15", name:"PRS Cap — Black", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/Fs5cdxZ6/GBlack.png" }
+    },
+    { id:"p16", name:"PRS Cap — Blue", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#3a5fa8"],
+      images:{ front:"https://i.postimg.cc/RVL33xqS/GBlue.png" }
+    },
+    { id:"p17", name:"PRS Cap — Green", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#3d7a4d"],
+      images:{ front:"https://i.postimg.cc/x1scRGvC/GGREEN.png" }
+    },
+    { id:"p18", name:"PRS Cap — Pink", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#f2a6c8"],
+      images:{ front:"https://i.postimg.cc/ZnFqy6bj/GPink.png" }
+    },
+    { id:"p19", name:"PRS Cap — Red", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#c81e2c"],
+      images:{ front:"https://i.postimg.cc/K8s8LG2w/GRed.png" }
+    },
+    { id:"p20", name:"PRS Cap — White", price:180.00, category:"Accessories",
+      description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
+      colors:["#ffffff"],
+      images:{ front:"https://i.postimg.cc/CLk2kmVq/GWhite.png" }
     },
     // PR Premium Windbreakers split into seven standalone single-color
     // listings (same pattern as the PR Hoodie split above) so each
@@ -1725,7 +1741,7 @@
   // just the first 5 catalog entries — the rest only appear once a shopper
   // clicks into a specific category tile (or "VIEW ALL", which still shows
   // the full catalog).
-  const NEW_ARRIVAL_IDS = ["t1","p2","p3","p13d","p5"];
+  const NEW_ARRIVAL_IDS = ["t1","p2","p3","p13d","p15"];
   renderProducts(PRODUCTS.filter(p => NEW_ARRIVAL_IDS.includes(p.id)));
   // section, and re-renders. Falls back to showing everything if a category
   // has no products yet (shouldn't happen as long as every CATEGORIES entry
