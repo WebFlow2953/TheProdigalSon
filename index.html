@@ -1567,16 +1567,6 @@
     // The beanie collection: each colorway is single-color, so all three
     // override `colors` (hides the swatch/color picker) and use their own
     // "One Size" / "Large" size set instead of the usual S/M/L/XL row.
-    { id:"p10", name:"PRS Premium Beanies — Red", price:150, category:"Accessories",
-      subCategory:"Beanies",
-      colors:["#c81e2c"],
-      sizes:["One Size","Large"],
-      images:{
-        front:"https://i.postimg.cc/25WQcGBC/beanie-RED-(front).png",
-        side: "https://i.postimg.cc/mZHv3WrX/beanie-RED-(side-left).png",
-        back: "https://i.postimg.cc/fL4KDph0/beanie-RED-(rear).png"
-      }
-    },
     { id:"p11", name:"PRS Premium Beanies — Black", price:150, category:"Accessories",
       subCategory:"Beanies",
       colors:["#111111"],
@@ -1586,6 +1576,46 @@
         side: "https://i.postimg.cc/J0PsnDSr/beanie-Black(side-left).png",
         back: "https://i.postimg.cc/DZSj5LP2/beanie-Black(back).png"
       }
+    },
+    // Same "PRS Premium Beanies" line as Black above — six more colorways
+    // at the same R150 price, single image each (no side/back gallery).
+    // The old Red premium beanie (front/side/back gallery) is retired and
+    // replaced by the Red entry below.
+    { id:"p34", name:"PRS Premium Beanies — Blue", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#3a5fa8"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/C1DJmwWF/Blue.png" }
+    },
+    { id:"p35", name:"PRS Premium Beanies — White", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#ffffff"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/4ysvPV6Q/White.png" }
+    },
+    { id:"p36", name:"PRS Premium Beanies — Yellow", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#f2c94c"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/4ysvPV6Z/Yellow.png" }
+    },
+    { id:"p37", name:"PRS Premium Beanies — Green", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#3d7a4d"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/NMhkyWL1/Green.png" }
+    },
+    { id:"p38", name:"PRS Premium Beanies — Pink", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#f2a6c8"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/Wb9mmDh2/PINK.png" }
+    },
+    { id:"p39", name:"PRS Premium Beanies — Red", price:150, category:"Accessories",
+      subCategory:"Beanies",
+      colors:["#c81e2c"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/C57GQ5Jp/RED.png" }
     },
     { id:"p12", name:"PRS Beanies — White", price:129.99, category:"Accessories",
       subCategory:"Beanies",
@@ -1817,7 +1847,7 @@
 
   function showAccessoriesSubcats(){
     subcatGrid.style.display = 'grid';
-    document.getElementById('categories').scrollIntoView({behavior:'smooth', block:'start'});
+    subcatGrid.scrollIntoView({behavior:'smooth', block:'center'});
   }
   function hideAccessoriesSubcats(){ subcatGrid.style.display = 'none'; }
 
