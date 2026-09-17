@@ -204,6 +204,11 @@
   }
   .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;filter:grayscale(15%);}
   .cat-card:hover img{transform:scale(1.07);}
+  /* Triptych variant: three images side by side filling the tile, used
+     for categories (like Accessories) that bundle multiple product lines
+     into one "Shop by Category" tile instead of a single photo. */
+  .cat-card-triptych{position:absolute;inset:0;display:flex;}
+  .cat-card-triptych img{width:33.333%;height:100%;flex:none;}
   .cat-overlay{
     position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.35) 100%);
     display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;
@@ -1165,7 +1170,15 @@
     { name:"Pants",       img:"https://cdn.imgpile.com/f/V2FVW2T_lg.webp" },
     { name:"Tracksuits",  img:"https://i.postimg.cc/x1qXjGdQ/Full-Black-BLUE.png" },
     { name:"Jackets",     img:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png" },
-    { name:"Accessories", img:"https://i.postimg.cc/Fs5cdxZ6/GBlack.png" }
+    // Accessories covers three sub-lines (beanies, caps, sidebags), so
+    // this tile shows a 3-image triptych instead of one photo — see
+    // `images` handling in the category-grid render below. Sidebag photo
+    // is a generic placeholder until a real product shot is supplied.
+    { name:"Accessories", images:[
+      "https://i.postimg.cc/QtcKvw67/PInk.png",
+      "https://i.postimg.cc/x1scRGvC/GGREEN.png",
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600&auto=format&fit=crop"
+    ] }
   ];
 
   // Swatch colors offered on every product card (shared across all products).
@@ -1561,11 +1574,39 @@
     { id:"p12", name:"PRS Beanies — White", price:129.99, category:"Accessories",
       colors:["#ffffff"],
       sizes:["One Size","Large"],
-      images:{
-        front:"https://i.postimg.cc/MZRqtQGY/beanie-White(front).png",
-        side: "https://i.postimg.cc/FzQtwTR9/beanie-White(side).png",
-        back: "https://i.postimg.cc/cHw27fcp/beanie-White(back).png"
-      }
+      images:{ front:"https://i.postimg.cc/MZRqtQGY/beanie-White(front).png" }
+    },
+    // Same "PRS Beanies" line as White above (single image, no side/back
+    // gallery) — six more colorways at the same R129.99 price.
+    { id:"p28", name:"PRS Beanies — Black", price:129.99, category:"Accessories",
+      colors:["#111111"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/Fzgck8cV/Black.png" }
+    },
+    { id:"p29", name:"PRS Beanies — Pink", price:129.99, category:"Accessories",
+      colors:["#f2a6c8"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/QtcKvw67/PInk.png" }
+    },
+    { id:"p30", name:"PRS Beanies — Green", price:129.99, category:"Accessories",
+      colors:["#3d7a4d"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/fRgddxtb/Green.png" }
+    },
+    { id:"p31", name:"PRS Beanies — Blue", price:129.99, category:"Accessories",
+      colors:["#3a5fa8"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/jdcPxVR7/Blue.png" }
+    },
+    { id:"p32", name:"PRS Beanies — Yellow", price:129.99, category:"Accessories",
+      colors:["#f2c94c"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/XYhZq4mf/Yellow.png" }
+    },
+    { id:"p33", name:"PRS Beanies — Red", price:129.99, category:"Accessories",
+      colors:["#c81e2c"],
+      sizes:["One Size","Large"],
+      images:{ front:"https://i.postimg.cc/KvG3s9th/RED.png" }
     },
     // PRS Caps — R180, unisex, six colorways.
     { id:"p15", name:"PRS Cap — Black", price:180.00, category:"Accessories",
@@ -1714,15 +1755,25 @@
   // "Shop by Category" grid. Each tile stores its category name in a
   // data attribute so a single delegated click handler can filter products.
   const catGrid = $('[data-cat-grid]');
-  catGrid.innerHTML = CATEGORIES.map(c => `
+  // A category can supply either a single `img` (most tiles) or an
+  // `images` array of exactly 3 photos (Accessories, which bundles
+  // beanies/caps/sidebags into one tile) — the triptych variant renders
+  // all three side by side instead of one photo filling the tile.
+  catGrid.innerHTML = CATEGORIES.map(c => {
+    const media = c.images ? `
+      <div class="cat-card-triptych">
+        ${c.images.map(src => `<img src="${src}" alt="${c.name}" loading="lazy">`).join('')}
+      </div>` : `<img src="${c.img}" alt="${c.name}" loading="lazy">`;
+    return `
     <div class="cat-card" data-cat-card="${c.name}">
-      <img src="${c.img}" alt="${c.name}" loading="lazy">
+      ${media}
       <div class="cat-overlay">
         <strong>${c.name.toUpperCase()}</strong>
         <span class="cat-shop">SHOP NOW</span>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   // Clicking any category tile filters the New Arrivals grid down to
   // matching products (see filterByCategory below).
