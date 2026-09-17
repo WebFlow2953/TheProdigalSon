@@ -204,17 +204,19 @@
   }
   .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;filter:grayscale(15%);}
   .cat-card:hover img{transform:scale(1.07);}
-  /* Triptych variant: three images side by side filling the tile, used
-     for categories (like Accessories) that bundle multiple product lines
-     into one "Shop by Category" tile instead of a single photo. */
-  .cat-card-triptych{position:absolute;inset:0;display:flex;}
-  .cat-card-triptych img{width:33.333%;height:100%;flex:none;}
   .cat-overlay{
     position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.35) 100%);
     display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;
   }
   .cat-overlay strong{font-family:'Archivo Black',sans-serif;font-size:14.5px;letter-spacing:.02em;}
   .cat-overlay .cat-shop{font-size:11.5px;font-weight:700;color:var(--lime);letter-spacing:.05em;margin-top:6px;border-bottom:1px solid var(--lime);width:max-content;padding-bottom:2px;}
+
+  /* Accessories sub-picker (Beanies / Caps / Bags / Sidebags) — hidden
+     until the Accessories tile above is clicked, then shown as its own
+     row of 4 tiles reusing the same .cat-card look. */
+  .subcat-grid{
+    display:none;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;
+  }
 
   /* ============ PRODUCT GRID ============ */
   .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px;}
@@ -458,6 +460,7 @@
   @media (max-width:1100px){
     .product-grid{grid-template-columns:repeat(3,1fr);}
     .cat-grid{grid-template-columns:repeat(3,1fr);}
+    .subcat-grid{grid-template-columns:repeat(2,1fr);}
     .footer-grid{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:860px){
@@ -478,6 +481,7 @@
     .features .wrap{grid-template-columns:repeat(2,1fr);gap:20px;padding:26px 20px;}
     .feature{border-left:none;padding:0;}
     .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .subcat-grid{grid-template-columns:repeat(2,1fr);}
     .product-grid{grid-template-columns:repeat(2,1fr);}
     .promo-grid{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr 1fr;}
@@ -742,6 +746,10 @@
     </div>
     <div class="cat-grid" data-cat-grid>
       <!-- injected by JS -->
+    </div>
+    <div class="subcat-grid" data-subcat-grid>
+      <!-- injected by JS — Beanies / Caps / Bags / Sidebags picker, shown
+           when the Accessories tile above is clicked -->
     </div>
   </div>
 </section>
@@ -1170,15 +1178,21 @@
     { name:"Pants",       img:"https://cdn.imgpile.com/f/V2FVW2T_lg.webp" },
     { name:"Tracksuits",  img:"https://i.postimg.cc/x1qXjGdQ/Full-Black-BLUE.png" },
     { name:"Jackets",     img:"https://i.postimg.cc/VL2WCdVg/brownwindbreaker(front).png" },
-    // Accessories covers three sub-lines (beanies, caps, sidebags), so
-    // this tile shows a 3-image triptych instead of one photo — see
-    // `images` handling in the category-grid render below. Sidebag photo
-    // is a generic placeholder until a real product shot is supplied.
-    { name:"Accessories", images:[
-      "https://i.postimg.cc/QtcKvw67/PInk.png",
-      "https://i.postimg.cc/x1scRGvC/GGREEN.png",
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600&auto=format&fit=crop"
-    ] }
+    { name:"Accessories", img:"https://i.postimg.cc/Fs5cdxZ6/GBlack.png" }
+  ];
+
+  // Accessories bundles four sub-lines. Clicking the Accessories tile
+  // above doesn't filter straight to "all Accessories" — it opens this
+  // 4-tile picker instead, and picking one of these filters products by
+  // both category AND subCategory (see PRODUCTS' `subCategory` field and
+  // filterBySubCategory() below). Bags/Sidebags have no real products yet
+  // so their photos are placeholders — swap the `img` once real shots and
+  // listings exist.
+  const SUBCATEGORIES = [
+    { name:"Beanies",  img:"https://i.postimg.cc/QtcKvw67/PInk.png" },
+    { name:"Caps",     img:"https://i.postimg.cc/x1scRGvC/GGREEN.png" },
+    { name:"Bags",     img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600&auto=format&fit=crop" },
+    { name:"Sidebags", img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600&auto=format&fit=crop" }
   ];
 
   // Swatch colors offered on every product card (shared across all products).
@@ -1554,6 +1568,7 @@
     // override `colors` (hides the swatch/color picker) and use their own
     // "One Size" / "Large" size set instead of the usual S/M/L/XL row.
     { id:"p10", name:"PRS Premium Beanies — Red", price:150, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#c81e2c"],
       sizes:["One Size","Large"],
       images:{
@@ -1563,6 +1578,7 @@
       }
     },
     { id:"p11", name:"PRS Premium Beanies — Black", price:150, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#111111"],
       sizes:["One Size","Large"],
       images:{
@@ -1572,6 +1588,7 @@
       }
     },
     { id:"p12", name:"PRS Beanies — White", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#ffffff"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/MZRqtQGY/beanie-White(front).png" }
@@ -1579,62 +1596,74 @@
     // Same "PRS Beanies" line as White above (single image, no side/back
     // gallery) — six more colorways at the same R129.99 price.
     { id:"p28", name:"PRS Beanies — Black", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#111111"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/Fzgck8cV/Black.png" }
     },
     { id:"p29", name:"PRS Beanies — Pink", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#f2a6c8"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/QtcKvw67/PInk.png" }
     },
     { id:"p30", name:"PRS Beanies — Green", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#3d7a4d"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/fRgddxtb/Green.png" }
     },
     { id:"p31", name:"PRS Beanies — Blue", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#3a5fa8"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/jdcPxVR7/Blue.png" }
     },
     { id:"p32", name:"PRS Beanies — Yellow", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#f2c94c"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/XYhZq4mf/Yellow.png" }
     },
     { id:"p33", name:"PRS Beanies — Red", price:129.99, category:"Accessories",
+      subCategory:"Beanies",
       colors:["#c81e2c"],
       sizes:["One Size","Large"],
       images:{ front:"https://i.postimg.cc/KvG3s9th/RED.png" }
     },
     // PRS Caps — R180, unisex, six colorways.
     { id:"p15", name:"PRS Cap — Black", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#111111"],
       images:{ front:"https://i.postimg.cc/Fs5cdxZ6/GBlack.png" }
     },
     { id:"p16", name:"PRS Cap — Blue", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#3a5fa8"],
       images:{ front:"https://i.postimg.cc/RVL33xqS/GBlue.png" }
     },
     { id:"p17", name:"PRS Cap — Green", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#3d7a4d"],
       images:{ front:"https://i.postimg.cc/x1scRGvC/GGREEN.png" }
     },
     { id:"p18", name:"PRS Cap — Pink", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#f2a6c8"],
       images:{ front:"https://i.postimg.cc/ZnFqy6bj/GPink.png" }
     },
     { id:"p19", name:"PRS Cap — Red", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#c81e2c"],
       images:{ front:"https://i.postimg.cc/K8s8LG2w/GRed.png" }
     },
     { id:"p20", name:"PRS Cap — White", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#ffffff"],
       images:{ front:"https://i.postimg.cc/CLk2kmVq/GWhite.png" }
@@ -1644,36 +1673,43 @@
     // "PRS Classic Cap" so the cards don't collide with the "PRS Cap"
     // listings above; rename freely if these are a different style.
     { id:"p21", name:"PRS Classic Cap — Black", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#111111"],
       images:{ front:"https://i.postimg.cc/rmpLhS3y/black.png" }
     },
     { id:"p22", name:"PRS Classic Cap — Blue", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#3a5fa8"],
       images:{ front:"https://i.postimg.cc/76TRXyWQ/GBLue.png" }
     },
     { id:"p23", name:"PRS Classic Cap — Yellow", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#f2c94c"],
       images:{ front:"https://i.postimg.cc/SKn1Nhk9/GYellow.png" }
     },
     { id:"p24", name:"PRS Classic Cap — Pink", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#f2a6c8"],
       images:{ front:"https://i.postimg.cc/VkV4hVny/GPink.png" }
     },
     { id:"p25", name:"PRS Classic Cap — White", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#ffffff"],
       images:{ front:"https://i.postimg.cc/d3bPtg18/whie-tey.png" }
     },
     { id:"p26", name:"PRS Classic Cap — Red", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#c81e2c"],
       images:{ front:"https://i.postimg.cc/HLb5tZtK/GRED.png" }
     },
     { id:"p27", name:"PRS Classic Cap — Green", price:180.00, category:"Accessories",
+      subCategory:"Caps",
       description:"Unisex structured cap in durable cotton twill with an embroidered PRS logo and an adjustable strap for a comfortable, one-size-fits-most fit.",
       colors:["#3d7a4d"],
       images:{ front:"https://i.postimg.cc/G28pQHry/GGreen.png" }
@@ -1755,32 +1791,62 @@
   // "Shop by Category" grid. Each tile stores its category name in a
   // data attribute so a single delegated click handler can filter products.
   const catGrid = $('[data-cat-grid]');
-  // A category can supply either a single `img` (most tiles) or an
-  // `images` array of exactly 3 photos (Accessories, which bundles
-  // beanies/caps/sidebags into one tile) — the triptych variant renders
-  // all three side by side instead of one photo filling the tile.
-  catGrid.innerHTML = CATEGORIES.map(c => {
-    const media = c.images ? `
-      <div class="cat-card-triptych">
-        ${c.images.map(src => `<img src="${src}" alt="${c.name}" loading="lazy">`).join('')}
-      </div>` : `<img src="${c.img}" alt="${c.name}" loading="lazy">`;
-    return `
+  catGrid.innerHTML = CATEGORIES.map(c => `
     <div class="cat-card" data-cat-card="${c.name}">
-      ${media}
+      <img src="${c.img}" alt="${c.name}" loading="lazy">
       <div class="cat-overlay">
         <strong>${c.name.toUpperCase()}</strong>
         <span class="cat-shop">SHOP NOW</span>
       </div>
     </div>
-  `;
-  }).join('');
+  `).join('');
+
+  // Accessories sub-picker (Beanies / Caps / Bags / Sidebags) — same tile
+  // markup as the main grid, but starts hidden and only appears once the
+  // Accessories tile is clicked (see handleCategoryClick below).
+  const subcatGrid = $('[data-subcat-grid]');
+  subcatGrid.innerHTML = SUBCATEGORIES.map(s => `
+    <div class="cat-card" data-subcat-card="${s.name}">
+      <img src="${s.img}" alt="${s.name}" loading="lazy">
+      <div class="cat-overlay">
+        <strong>${s.name.toUpperCase()}</strong>
+        <span class="cat-shop">SHOP NOW</span>
+      </div>
+    </div>
+  `).join('');
+
+  function showAccessoriesSubcats(){
+    subcatGrid.style.display = 'grid';
+    document.getElementById('categories').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function hideAccessoriesSubcats(){ subcatGrid.style.display = 'none'; }
+
+  // Shared entry point for every "category tile clicked" path (main grid,
+  // nav dropdown, footer links): Accessories opens the 4-tile sub-picker
+  // instead of jumping straight to a filtered product list; every other
+  // category behaves exactly as before.
+  function handleCategoryClick(cat){
+    if(cat === 'Accessories'){ showAccessoriesSubcats(); return; }
+    hideAccessoriesSubcats();
+    filterByCategory(cat);
+  }
 
   // Clicking any category tile filters the New Arrivals grid down to
-  // matching products (see filterByCategory below).
+  // matching products (see filterByCategory below) — except Accessories,
+  // which opens the sub-picker instead (see handleCategoryClick above).
   catGrid.addEventListener('click', e=>{
     const card = e.target.closest('[data-cat-card]');
     if(!card) return;
-    filterByCategory(card.dataset.catCard);
+    handleCategoryClick(card.dataset.catCard);
+  });
+
+  // Picking a sub-tile (Beanies/Caps/Bags/Sidebags) filters by both
+  // category and subCategory, then hides the picker again.
+  subcatGrid.addEventListener('click', e=>{
+    const card = e.target.closest('[data-subcat-card]');
+    if(!card) return;
+    hideAccessoriesSubcats();
+    filterBySubCategory('Accessories', card.dataset.subcatCard);
   });
 
   /* ---------- RENDER PRODUCTS ---------- */
@@ -1840,6 +1906,19 @@
     renderProducts(filtered.length ? filtered : PRODUCTS);
     document.getElementById('new-arrivals').scrollIntoView({behavior:'smooth', block:'start'});
     showToast(filtered.length ? `Showing ${cat}` : `No items yet in ${cat} — showing all`);
+  }
+
+  // Filters within a category by its sub-line too (e.g. Accessories →
+  // Beanies). Falls back to the whole parent category if nothing matches
+  // yet (e.g. Bags/Sidebags, which have no listings until real product
+  // photos are supplied), rather than falling all the way back to the
+  // entire catalog.
+  function filterBySubCategory(cat, sub){
+    const filtered = PRODUCTS.filter(p=>p.category===cat && p.subCategory===sub);
+    const fallback = PRODUCTS.filter(p=>p.category===cat);
+    renderProducts(filtered.length ? filtered : (fallback.length ? fallback : PRODUCTS));
+    document.getElementById('new-arrivals').scrollIntoView({behavior:'smooth', block:'start'});
+    showToast(filtered.length ? `Showing ${sub}` : `No items yet in ${sub} — showing all ${cat}`);
   }
 
   // "VIEW ALL" link resets the New Arrivals grid back to the full catalog.
@@ -2584,7 +2663,7 @@
     a.addEventListener('click', e=>{
       e.preventDefault();
       closeNav();
-      filterByCategory(a.dataset.cat);
+      handleCategoryClick(a.dataset.cat);
     });
   });
 
