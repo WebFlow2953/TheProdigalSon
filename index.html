@@ -1200,13 +1200,11 @@
   // above doesn't filter straight to "all Accessories" — it opens this
   // 4-tile picker instead, and picking one of these filters products by
   // both category AND subCategory (see PRODUCTS' `subCategory` field and
-  // filterBySubCategory() below). Bags/Sidebags have no real products yet
-  // so their photos are placeholders — swap the `img` once real shots and
-  // listings exist.
+  // filterBySubCategory() below).
   const SUBCATEGORIES = [
     { name:"Beanies",  img:"https://i.postimg.cc/QtcKvw67/PInk.png" },
     { name:"Caps",     img:"https://i.postimg.cc/x1scRGvC/GGREEN.png" },
-    { name:"Bags",     img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600&auto=format&fit=crop" },
+    { name:"Bags",     img:"https://i.postimg.cc/TwF84XcY/Chat-GPT-Image-Sep-22-2026-08-19-29-PM.png" },
     { name:"Sidebags", img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600&auto=format&fit=crop" }
   ];
 
@@ -1905,6 +1903,35 @@
       description:"Unisex cap with embroidered Prodigal Son branding and an adjustable back strap — one size fits most.",
       colors:["#f2c94c"],
       images:{ front:"https://i.postimg.cc/hvVWbDyp/Yellow.png" }
+    },
+    // New accessories drop: statement bags in four colorways, all priced at R500.
+    { id:"b1", name:"PRS Bag — Pink", price:500.00, category:"Accessories",
+      subCategory:"Bags",
+      sizes:["One Size"],
+      description:"A sleek everyday bag with a premium structured finish, roomy interior, and an effortlessly elevated streetwear look. Designed to carry your essentials in style with a bold pink finish.",
+      colors:["#f2a6c8"],
+      images:{ front:"https://i.postimg.cc/TwF84XcY/Chat-GPT-Image-Sep-22-2026-08-19-29-PM.png" }
+    },
+    { id:"b2", name:"PRS Bag — Blue", price:500.00, category:"Accessories",
+      subCategory:"Bags",
+      sizes:["One Size"],
+      description:"A sleek everyday bag with a premium structured finish, roomy interior, and an effortlessly elevated streetwear look. Designed to carry your essentials in style with a bold blue finish.",
+      colors:["#3a5fa8"],
+      images:{ front:"https://i.postimg.cc/XvtQMNTv/blue.jpg" }
+    },
+    { id:"b3", name:"PRS Bag — Black", price:500.00, category:"Accessories",
+      subCategory:"Bags",
+      sizes:["One Size"],
+      description:"A sleek everyday bag with a premium structured finish, roomy interior, and an effortlessly elevated streetwear look. Designed to carry your essentials in style with a sharp black finish.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/MHS5TP67/black.jpg" }
+    },
+    { id:"b4", name:"PRS Bag — Red", price:500.00, category:"Accessories",
+      subCategory:"Bags",
+      sizes:["One Size"],
+      description:"A sleek everyday bag with a premium structured finish, roomy interior, and an effortlessly elevated streetwear look. Designed to carry your essentials in style with a bold red finish.",
+      colors:["#c81e2c"],
+      images:{ front:"https://i.postimg.cc/tC9DGMmt/red.jpg" }
     },
     // PR Premium Windbreakers split into seven standalone single-color
     // listings (same pattern as the PR Hoodie split above) so each
