@@ -2524,8 +2524,17 @@
   const PDP_COLORS = ["#8c8c8c","#2b2b2b","#c9a13b","#a3a15a","#d98080"];
   const SIZES = ["S","M","L","XL"];
   const PRINT_UPCHARGE = 80; // Front & Back print costs +R80 over the Front Only price
+  const HOODIE_PRINT_PRICING = { front:350, both:400 };
   const pdpOverlay = $('[data-pdp-overlay]');
   const pdpState = { productId:null, colorIndex:0, size:null, qty:1, printStyle:null, setOption:null };
+
+  function getPrintStylePrice(product, style){
+    if(!product || !product.printOptional) return product ? product.price : 0;
+    if(product.category === 'Hoodies'){
+      return style === 'both' ? HOODIE_PRINT_PRICING.both : HOODIE_PRINT_PRICING.front;
+    }
+    return style === 'both' ? product.price + PRINT_UPCHARGE : product.price;
+  }
 
   // Renders the big gallery image + angle thumbnail strip for a product at
   // a given color index. Pulled out of openPDP() so the PDP color-swatch
@@ -2633,8 +2642,8 @@
     if(product.printOptional){
       printBlock.style.display = '';
       $('[data-pdp-print]').innerHTML = `
-        <button class="pdp-print-btn" data-pdp-print-style="front">Front Only<span>${money(product.price)}</span></button>
-        <button class="pdp-print-btn" data-pdp-print-style="both">Front &amp; Back<span>${money(product.price + PRINT_UPCHARGE)}</span></button>
+        <button class="pdp-print-btn" data-pdp-print-style="front">Front Only<span>${money(getPrintStylePrice(product, 'front'))}</span></button>
+        <button class="pdp-print-btn" data-pdp-print-style="both">Front &amp; Back<span>${money(getPrintStylePrice(product, 'both'))}</span></button>
       `;
     } else {
       printBlock.style.display = 'none';
@@ -2754,7 +2763,7 @@
     $('[data-pdp-print-error]').textContent = '';
     // Reflect the surcharge in the big price display immediately.
     const product = PRODUCTS.find(p=>p.id===pdpState.productId);
-    const price = pdpState.printStyle==='both' ? product.price + PRINT_UPCHARGE : product.price;
+    const price = getPrintStylePrice(product, pdpState.printStyle);
     $('[data-pdp-price]').textContent = money(price);
   });
 
@@ -2854,7 +2863,7 @@
     const bottomLabel = product.bottomLabel || 'Pants';
     const setLabels = { top:' — Top Only', pants:` — ${bottomLabel} Only`, full:' — Full Set' };
     const price = product.setPricing ? product.setPricing[pdpState.setOption]
-      : (isBothPrint ? product.price + PRINT_UPCHARGE : product.price);
+      : getPrintStylePrice(product, pdpState.printStyle);
     const printLabel = isBothPrint ? ' — Front & Back Print' : (product.setPricing ? setLabels[pdpState.setOption] : '');
     const key = product.id + '-' + pdpState.colorIndex + '-' + pdpState.size + '-' + pdpState.printStyle + '-' + pdpState.setOption;
     const existing = state.cart.find(i=>i.key===key);
