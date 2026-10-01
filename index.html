@@ -272,6 +272,11 @@
   .promo-light .promo-content{color:var(--near-black);}
   .promo-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.1em;margin-bottom:10px;text-transform:uppercase;opacity:.7;}
   .promo h3{font-size:24px;line-height:1.15;margin-bottom:20px;}
+  .promo-beanie{background:#111;}
+  .promo-beanie img{left:auto;right:0;width:50%;object-fit:contain;padding:12px;filter:none;}
+  .promo-beanie::before{background:linear-gradient(90deg,#111 0%,rgba(17,17,17,.94) 46%,rgba(17,17,17,.06) 100%);}
+  .promo-beanie .promo-content{width:54%;max-width:none;padding:24px 24px 24px 20px;}
+  .promo-beanie h3{font-size:21px;line-height:1.12;margin-bottom:12px;}
 
   /* ============ ABOUT US ============ */
   .about-section{background:var(--near-black);color:#fff;}
@@ -502,6 +507,10 @@
   @media (max-width:480px){
     .footer-grid{grid-template-columns:1fr;}
     .newsletter-form{max-width:100%;}
+    .promo-beanie{min-height:320px;}
+    .promo-beanie img{width:46%;}
+    .promo-beanie .promo-content{width:58%;padding:22px 18px;}
+    .promo-beanie h3{font-size:18px;}
   }
 
   [data-nav-scrim]{
@@ -795,8 +804,8 @@
           <a href="#new-arrivals" class="btn btn-primary">SHOP NOW</a>
         </div>
       </div>
-      <div class="promo promo-dark">
-        <img src="https://i.postimg.cc/zfZqmTHY/Full-PINKRED.png" alt="">
+      <div class="promo promo-dark promo-beanie" data-limited-drop>
+        <img src="https://i.postimg.cc/Wb9mmDh2/PINK.png" alt="PRS Premium Beanies — Pink">
         <div class="promo-content">
           <div class="promo-eyebrow">Limited Drop</div>
           <h3>EXCLUSIVE STYLES. LIMITED QUANTITIES.</h3>
@@ -1199,7 +1208,7 @@
     { name:"Beanies",  img:"https://i.postimg.cc/QtcKvw67/PInk.png" },
     { name:"Caps",     img:"https://i.postimg.cc/x1scRGvC/GGREEN.png" },
     { name:"Bags",     img:"https://i.postimg.cc/TwF84XcY/Chat-GPT-Image-Sep-22-2026-08-19-29-PM.png" },
-    { name:"Sidebags", img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600&auto=format&fit=crop" }
+    { name:"Sidebags", img:"https://i.postimg.cc/T2qswyGD/black.jpg" }
   ];
 
   // Swatch colors offered on every product card (shared across all products).
@@ -1432,6 +1441,36 @@
       description:"Relaxed-fit track pants with an elasticated waist and tapered leg — soft brushed fabric that layers easily with any of the tees or hoodies. All colors available, sizes Small to XL.",
       colors:["#111111"], sizes:["S","M","L","XL"],
       images:{ front:"https://cdn.imgpile.com/f/UiIXWU3_xl.webp" }
+    },
+    { id:"pn1", name:"PRS Pants — Black", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in black, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#111111"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/sDGZmWXp/blackpant.jpg" }
+    },
+    { id:"pn2", name:"PRS Pants — Blue", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in blue, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#3a5fa8"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/wB2tMcf6/bluepant.jpg" }
+    },
+    { id:"pn3", name:"PRS Pants — Grey", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in grey, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#8a8a8a"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/mDrPHzJS/greypant.jpg" }
+    },
+    { id:"pn4", name:"PRS Pants — Red", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in red, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#c81e2c"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/SstJ7Qpq/redpant.jpg" }
+    },
+    { id:"pn5", name:"PRS Pants — White", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in white, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#ffffff"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/qqhgmfk7/whitepant.jpg" }
+    },
+    { id:"pn6", name:"PRS Pants — Yellow", price:320.00, category:"Pants",
+      description:"Everyday PRS pants in yellow, designed for a comfortable fit and an easy-to-style streetwear look. Available in sizes Small to XL.",
+      colors:["#f2c94c"], sizes:["S","M","L","XL"],
+      images:{ front:"https://i.postimg.cc/Kj6jw9zL/yellow-pant.jpg" }
     },
     // PRS Sweatpants — loose/relaxed jogger fit, drawstring elastic
     // waist, side pockets, "Prodigal Son" thigh print. R300, sizes S–XL.
@@ -1923,6 +1962,69 @@
       colors:["#c81e2c"],
       images:{ front:"https://i.postimg.cc/tC9DGMmt/red.jpg" }
     },
+    { id:"sb1", name:"PRS Sidebag — Black", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in black.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/T2qswyGD/black.jpg" }
+    },
+    { id:"sb2", name:"PRS Sidebag — White", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in white.",
+      colors:["#ffffff"],
+      images:{ front:"https://i.postimg.cc/x1qpttmv/white.jpg" }
+    },
+    { id:"sb3", name:"PRS Sidebag — Red", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in red.",
+      colors:["#c81e2c"],
+      images:{ front:"https://i.postimg.cc/ZKwD81WC/red.jpg" }
+    },
+    { id:"sb4", name:"PRS Sidebag — Grey", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in grey.",
+      colors:["#8a8a8a"],
+      images:{ front:"https://i.postimg.cc/65Fpp1Bv/grey.jpg" }
+    },
+    { id:"sb5", name:"PRS Sidebag — Green", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in green.",
+      colors:["#3d7a4d"],
+      images:{ front:"https://i.postimg.cc/9FmnqWQD/green.jpg" }
+    },
+    { id:"sb6", name:"PRS Sidebag — Blue", price:200.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A compact everyday sidebag designed to keep your essentials close, available in blue.",
+      colors:["#3a5fa8"],
+      images:{ front:"https://i.postimg.cc/02kBJ8yx/blue.jpg" }
+    },
+    { id:"sb7", name:"PRS Limited Edition Sidebag — Brown & Red", price:250.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A limited-edition PRS sidebag in a rich brown and red colorway. Its bold contrast gives this compact everyday essential a distinctive streetwear finish, with room for the items you like to keep close.",
+      colors:["#6b4a35"],
+      images:{ front:"https://i.postimg.cc/d13bdwBj/brown-red.jpg" }
+    },
+    { id:"sb8", name:"PRS Limited Edition Sidebag — Green & Red", price:250.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A limited-edition PRS sidebag featuring a striking green and red colorway. Made for carrying everyday essentials, this compact piece brings a confident pop of color to your look.",
+      colors:["#3d7a4d"],
+      images:{ front:"https://i.postimg.cc/y8BYR3Ss/greenred.jpg" }
+    },
+    { id:"sb9", name:"PRS Limited Edition Sidebag — Black & Red", price:250.00, category:"Accessories",
+      subCategory:"Sidebags",
+      sizes:["One Size"],
+      description:"A limited-edition PRS sidebag pairing sharp black with bold red accents. Compact and easy to carry, it keeps your daily essentials together while adding a standout finish to your outfit.",
+      colors:["#111111"],
+      images:{ front:"https://i.postimg.cc/T3GYb5Wq/limited-ED-Black-and-red.jpg" }
+    },
     // PR Premium Windbreakers split into seven standalone single-color
     // listings (same pattern as the PR Hoodie split above) so each
     // colorway shows up as its own card under Jackets, instead of one
@@ -2120,9 +2222,7 @@
 
   // Filters within a category by its sub-line too (e.g. Accessories →
   // Beanies). Falls back to the whole parent category if nothing matches
-  // yet (e.g. Bags/Sidebags, which have no listings until real product
-  // photos are supplied), rather than falling all the way back to the
-  // entire catalog.
+  // yet, rather than falling all the way back to the entire catalog.
   function filterBySubCategory(cat, sub){
     const filtered = PRODUCTS.filter(p=>p.category===cat && p.subCategory===sub);
     const fallback = PRODUCTS.filter(p=>p.category===cat);
