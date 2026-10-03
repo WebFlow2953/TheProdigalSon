@@ -1388,28 +1388,28 @@
     // PR Hoodie split into five standalone single-color listings (rather
     // than one product with a color-swatch picker) so each colorway shows
     // up as its own card under Hoodies.
-    { id:"p2", name:"PR Hoodie — Black", price:400.00, category:"Hoodies",
+    { id:"p2", name:"PR Hoodie — Black", price:350.00, category:"Hoodies",
       printOptional:true,
       colors:["#111111"],
       images:{ front:"https://i.postimg.cc/QMd5mPn7/BLACKONe.png", back:"https://cdn.imgpile.com/f/LRs0Qd2_lg.webp" }
     },
-    { id:"p2b", name:"PR Hoodie — Green", price:400.00, category:"Hoodies",
+    { id:"p2b", name:"PR Hoodie — Green", price:350.00, category:"Hoodies",
       printOptional:true,
       colors:["#3d7a4d"],
       images:{ front:"https://cdn.imgpile.com/f/RLJqD4j_lg.webp", back:"https://i.postimg.cc/zGrv0Jrj/Green(back).png" }
     },
-    { id:"p2c", name:"PR Hoodie — Grey", price:400.00, category:"Hoodies",
+    { id:"p2c", name:"PR Hoodie — Grey", price:350.00, category:"Hoodies",
       printOptional:true,
       colors:["#8a8a8a"],
       images:{ front:"https://cdn.imgpile.com/f/q7YDyI9_lg.webp", back:"https://i.postimg.cc/9fNW526W/Grey(back).png" }
     },
-    { id:"p2d", name:"PR Hoodie — Pink", price:400.00, category:"Hoodies",
+    { id:"p2d", name:"PR Hoodie — Pink", price:350.00, category:"Hoodies",
       printOptional:true,
       reviews:330,
       colors:["#f2a6c8"],
       images:{ front:"https://cdn.imgpile.com/f/n5QEMQZ_lg.webp", back:"https://i.postimg.cc/fTjDWmG8/Pink(Back).png" }
     },
-    { id:"p2e", name:"PR Hoodie — Red", price:400.00, category:"Hoodies",
+    { id:"p2e", name:"PR Hoodie — Red", price:350.00, category:"Hoodies",
       printOptional:true,
       colors:["#c81e2c"],
       images:{ front:"https://cdn.imgpile.com/f/4G9KCky_lg.webp", back:"https://cdn.imgpile.com/f/9xIiLKc_lg.webp" }
@@ -1598,7 +1598,7 @@
       bottomLabel:"Shorts",
       images:{ front:"https://i.postimg.cc/Hk2CYD1W/White-Blue.png" }
     },
-    { id:"p6", name:"PR Hoodie — White", price:400, category:"Hoodies",
+    { id:"p6", name:"PR Hoodie — White", price:350.00, category:"Hoodies",
       printOptional:true,
       reviews:200,
       description:"A heavyweight, premium-cut hoodie built for those who stand out in a crowd. Brushed fleece interior, reinforced stitching, and a boxier silhouette than our core PR line — this is the one you reach for when you want the elevated version.",
@@ -2583,7 +2583,7 @@
   /* ---------- PRODUCT DETAIL PAGE ---------- */
   const PDP_COLORS = ["#8c8c8c","#2b2b2b","#c9a13b","#a3a15a","#d98080"];
   const SIZES = ["S","M","L","XL"];
-  const PRINT_UPCHARGE = 80; // Front & Back print costs +R80 over the Front Only price
+  const PRINT_UPCHARGE = 50; // Front & Back print costs +R50 over the Front Only price
   const pdpOverlay = $('[data-pdp-overlay]');
   const pdpState = { productId:null, colorIndex:0, size:null, qty:1, printStyle:null, setOption:null };
 
@@ -2692,7 +2692,7 @@
 
     // Print Style picker — only for hoodies flagged `printOptional`, where
     // the back print is a genuine add-on (not just an extra outfit photo
-    // like the cargo pants' back angle). Front & Back costs +R80. Neither
+    // like the cargo pants' back angle). Front & Back costs +R50. Neither
     // option starts selected — the shopper has to pick one.
     const printBlock = $('[data-pdp-print-block]');
     if(product.printOptional){
