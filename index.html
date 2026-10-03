@@ -2548,6 +2548,7 @@
     order.items.forEach((item,index)=>{
       lines.push(`${index+1}. *${item.name}*`);
       lines.push(`   Qty: ${item.qty}  |  ${money(item.price)} each  |  ${money(item.price*item.qty)}`);
+      if(item.img) lines.push(`   Image: ${item.img}`);
     });
     lines.push('');
     lines.push(`*PAYMENT SUMMARY*`);
